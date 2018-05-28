@@ -36,8 +36,20 @@ $(function () {
         quiz again */
 
     // Variable Declarations
-    const _QUESTIONS = [ $(`<div id="questionWrapper">
-                            <h1 class="text-center white">Question 1</h1>
+
+    // _INTRO is the element that will display the page introduction
+    const _INTRO = $(`<div id="slide">
+                        <h1 class="text-center white">
+                            Yo, I Heard You Like <span class="this">this</span>!
+                        </h1>
+                        <p>
+                              Oh, wait, you don't? You think <span class="this">this</span> is frustrating? Has too many rules? Struggling to remember them all? Or, think you're a master? Think you've got it down pat? That you're hot #@%&amp;? Well step up, ya smug so-and-so, SHOW ME WHAT YOU GOT! <img src="assets/img/cromulon.png" alt="Cromulon" width=15>
+                        </p>
+                      </div>`);
+
+    // _QUESTIONS will store all of the questions as HTML Elements
+    const _QUESTIONS = [ $(`<div id="slide">
+                            <h1 class="text-center">Question 1</h1>
                             <ul>
                                 <li class="answer" id="answer1">
                                     Answer 1
@@ -53,8 +65,8 @@ $(function () {
                                 </li>
                             </ul>
                         </div>`),
-                        $(`<div id="questionWrapper">
-                            <h1 class="text-center white">Question 2</h1>
+                        $(`<div id="slide">
+                            <h1 class="text-center">Question 2</h1>
                             <ul>
                                 <li class="answer" id="answer1">
                                     Answer 1
@@ -72,6 +84,13 @@ $(function () {
                         </div>`)
     ];
 
+    // const _TIMEUP is an HTML element that will display when the user gets a question wrong
+    // due to time elapsing
+    const _TIMEUP = $(`<div id="slide">
+                            <h1 class="text-center wrong">Time's Up!</h1>
+                            <p class="text-center">You ran out of time... On to the next question!</p>
+                        </div>`)
+
     /* function questionSwitch will handle the animation between questions. 
     questionSwitch expects the previous slide as an element and the new slide as an element,
     both as parameters in that order */
@@ -86,12 +105,41 @@ $(function () {
             // Set opacity of the next question element to 0
             nextQuestionElement.css({opacity: 0});
             // Append the next question element to the question display
-            nextQuestionElement.appendTo(`#questionDisplay`);
+            nextQuestionElement.appendTo(`#questionWrapper`);
             // Fade it in
             nextQuestionElement.animate({opacity: 1}, 500);
         });
 
     }
+
+    /* function runQuiz runs the quiz!*/
+    function runQuiz () {
+
+        // function nextQuestion is a helper function that runs to streamline question handling
+        // Display's next question and handles timer starting
+        function nextQuestion (questionElement, timerExecution) {
+            // Transition in new question (old question is current #questionWrapper)
+
+            // Start the timer
+        }
+        // Declare currentQuestion to store question Element, initialize to first question
+        // _QUESTIONS[0]
+        let currentQuestion = _QUESTIONS[0];
+
+        // Declare wasCorrect, an array that tracks whether the user was correct, incorrect, or
+        // missed the question due to time. Values expected are true (user was correct), 
+
+        // Change Start Quiz button to Submit Answer button
+
+        // Submit Answer handler
+
+        // Quiz Loop
+    }
+
+    // ************ Quiz Start! **************
+    
+    // Display the intro slide
+    questionSwitch($(`#slide`), _INTRO);
 
     /* Answers handler
     jQuery on click event handler for elements of #answers */
@@ -101,8 +149,13 @@ $(function () {
     var counter = 0;
     $(`#nextQuestion`).on(`click`, function () {
         let div = _QUESTIONS[counter];
-        questionSwitch($(`#questionWrapper`), div);
+        questionSwitch($(`#slide`), div);
         counter++;
     });
+
+    $(`#timesUp`).on(`click`, function () {
+        let div = _TIMEUP;
+        questionSwitch($(`#slide`), div);
+    })
 
 });

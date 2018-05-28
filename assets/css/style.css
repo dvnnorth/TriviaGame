@@ -69,3 +69,12 @@ p {
 .answer .selected {
     background-color: #50565E;
 }
+
+.wrong {
+    color: #f00;
+    text-shadow:
+    -1px -1px 0 #000,  
+     1px -1px 0 #000,
+     -1px 1px 0 #000,
+      1px 1px 0 #000;
+}

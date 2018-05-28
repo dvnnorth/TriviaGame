@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css?family=Karla|Frank+Ruhl+Libre:400,700');
+
+* {
+  box-sizing: border-box;
+  font-family: 'Karla', Arial, sans-serif !important;
+}
+
+body {
+  background: url("../img/random_Binary_Background.png");
+}
+
+.container,
+.row {
+  background: #20262E;
+  padding-top: 0.2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: 'Frank Ruhl Libre', Arial, sans-serif !important;
+  font-weight: bold !important;
+}
+
+p {
+  color: white;
+}
+
+.white {
+  color: white !important;
+}
+
+.jumbotron {
+  color: black !important;
+}
+
+.display-1 {
+  font-weight: bold !important;
+}
+
+.col-style {
+  background: #30363E;
+}
+
+.rounded-edges {
+  border-radius: 5px;
+}
+
+.this {
+  color: #B896ED;
+  background-color: #40464E;
+  font-family: "Lucida Console", Monaco, monospace !important;
+  text-align: center;
+  padding: 0.2em 0.2em 0 0.2em;
+  border-radius: 5px;
+}

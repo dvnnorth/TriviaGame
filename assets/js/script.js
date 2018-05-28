@@ -51,16 +51,16 @@ $(function () {
     const _QUESTIONS = [ $(`<div id="slide">
                             <h1 class="text-center">Question 1</h1>
                             <ul>
-                                <li class="answer" id="answer1">
+                                <li class="answer wrong">
                                     Answer 1
                                 </li>
-                                <li class="answer" id="answer2">
+                                <li class="answer correct">
                                     Answer 2
                                 </li>
-                                <li class="answer" id="answer3">
+                                <li class="answer wrong">
                                     Answer 3
                                 </li>
-                                <li class="answer" id="answer4">
+                                <li class="answer wrong">
                                     Answer 4
                                 </li>
                             </ul>
@@ -87,9 +87,20 @@ $(function () {
     // const _TIMEUP is an HTML element that will display when the user gets a question wrong
     // due to time elapsing
     const _TIMEUP = $(`<div id="slide">
-                            <h1 class="text-center wrong">Time's Up!</h1>
-                            <p class="text-center">You ran out of time... On to the next question!</p>
+                            <h1 class="text-center timeUp">Time's Up!</h1>
+                            <p class="text-center">You failed to answer the question on time...</p>
                         </div>`)
+
+    const _FINAL = $(`<div id="slide">
+                            <h1 class="text-center">Quiz Over!</h1>
+                            <p class="text-center">Alright, lets see how you did!</p>
+                            <ul id="results">
+                                <li style="list-style-type:none">You got <span id="correct"></span> questions correct!</li>
+                                <li style="list-style-type:none">You got <span id="wrong"></span> questions wrong...</li>
+                            </ul>
+                            <h1 class="text-center">Your score: <span id="score"></span></h1>
+                            <p class="passFailText"></p>
+                      </div>`)
 
     /* function questionSwitch will handle the animation between questions. 
     questionSwitch expects the previous slide as an element and the new slide as an element,
@@ -112,9 +123,25 @@ $(function () {
 
     }
 
+    /* function checkAnswer looks to see if a question is correct based on which answer
+       is selected in a given questionElement, appends a result to the resultsArray 
+       (will be true for correct or false for incorrect) and returns the array
+       with the new result appended */
+    function checkAnswer (questionElement, resultsArray) {
+        // logic to check questionElement and append result
+
+        return resultsArray;
+    }
+
+    /* function grade displays the user's score once _FINAL has been displayed */
+    function grade () {
+
+    }
+
     /* function runQuiz runs the quiz!*/
     function runQuiz () {
 
+        // Function inits
         // function nextQuestion is a helper function that runs to streamline question handling
         // Display's next question and handles timer starting
         function nextQuestion (questionElement, timerExecution) {
@@ -122,9 +149,14 @@ $(function () {
 
             // Start the timer
         }
+
+        // Variable declarations, inits
         // Declare currentQuestion to store question Element, initialize to first question
         // _QUESTIONS[0]
         let currentQuestion = _QUESTIONS[0];
+        // Declare results and init to be an empty array. 
+        // Will push true or false to results depending on users selected answer
+        let results = [];
 
         // Declare wasCorrect, an array that tracks whether the user was correct, incorrect, or
         // missed the question due to time. Values expected are true (user was correct), 
@@ -156,6 +188,24 @@ $(function () {
     $(`#timesUp`).on(`click`, function () {
         let div = _TIMEUP;
         questionSwitch($(`#slide`), div);
-    })
+    });
+
+    $(`#showHideTimer`).on(`click`, function () {
+        if ($(`#timer`).hasClass(`show`)) {
+            $(`#timer`).removeClass(`show`);
+        }
+        else {
+            $(`#timer`).addClass(`show`)
+        }
+    });
+
+    $(`#showHideButtonDisplay`).on(`click`, function () {
+        if ($(`#buttonDisplay`).hasClass(`show`)) {
+            $(`#buttonDisplay`).removeClass(`show`);
+        }
+        else {
+            $(`#buttonDisplay`).addClass(`show`)
+        }
+    });
 
 });

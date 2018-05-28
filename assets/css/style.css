@@ -3,6 +3,7 @@
 * {
   box-sizing: border-box;
   font-family: 'Karla', Arial, sans-serif !important;
+  color: #fff;
 }
 
 body {
@@ -55,4 +56,16 @@ p {
   text-align: center;
   padding: 0.2em 0.2em 0 0.2em;
   border-radius: 5px;
+}
+
+.answer {
+    list-style-type: none;
+}
+
+.answer:hover {
+    background-color: #40464E;
+}
+
+.answer .selected {
+    background-color: #50565E;
 }

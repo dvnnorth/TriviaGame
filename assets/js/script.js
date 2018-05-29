@@ -1,43 +1,5 @@
 $(function () {
 
-    /* From the specification: 
-    
-    * You'll create a trivia game that shows only one question until the player answers it or their time runs out.
-
-    * If the player selects the correct answer, show a screen congratulating them for choosing the right option. After a few seconds, display the next question -- do this without user input.
-
-    * The scenario is similar for wrong answers and time-outs.
-
-            - If the player runs out of time, tell the player that time's up and display the correct answer. Wait a few seconds, then show the next question.
-            
-            - If the player chooses the wrong answer, tell the player they selected the wrong option and then display the correct answer. Wait a few seconds, then show the next question.
-
-    * On the final screen, show the number of correct answers, incorrect answers, and an option to restart the game (without reloading the page).
-
-    /* Quiz taker will click a "Start Quiz" button to begin the quiz
-    
-    The first question will appear (I'd like to animate the question appearance but will implement later)
-    and the question timer will start.
-
-    For each question:
-        
-            -The question will display at the top of the question div with four possible answers below
-            -A timer will begin and will record an incorrect answer and move to the next question if it runs out
-            -hover CSS will put a border or some indication around the answer that the user is selecting
-            -A click event handler will take care of the question selection
-
-        A collection (array or object) will store the correct answers (this will allow for question randomization)
-        and the user's choices.
-
-        After every question, there will be a brief screen that tells the user they got the question right or wrong
-        for a few seconds, then moves to the next question
-
-        When all questions have been answered, the final slide will give the user a score and the option to take the
-        quiz again */
-
-    // Variable Declarations
-
-    // _INTRO is the element that will display the page introduction
     const _INTRO = $(`
         <div id="slide">
             <h1 class="text-center white">
@@ -48,62 +10,61 @@ $(function () {
             </p>
         </div>`
     );
-
-    // _QUESTIONS will store all of the questions as HTML Elements
     const _QUESTIONS = [ $(`
-                            <div id="slide">
-                                <h1 class="text-center">Question 1</h1>
-                                <ul>
-                                    <li class="answer wrong">
-                                        Answer 1
-                                    </li>
-                                    <li class="answer correct">
-                                        Answer 2
-                                    </li>
-                                    <li class="answer wrong">
-                                        Answer 3
-                                    </li>
-                                    <li class="answer wrong">
-                                        Answer 4
-                                    </li>
-                                </ul>
-                            </div>`),
-                          $(`
-                            <div id="slide">
-                                <h1 class="text-center">Question 2</h1>
-                                <ul>
-                                    <li class="answer" id="answer1">
-                                        Answer 1
-                                    </li>
-                                    <li class="answer" id="answer2">
-                                        Answer 2
-                                    </li>
-                                    <li class="answer" id="answer3">
-                                        Answer 3
-                                    </li>
-                                    <li class="answer" id="answer4">
-                                        Answer 4
-                                    </li>
-                                </ul>
-                            </div>`)
+                        <div id="slide">
+                            <h1 class="text-center">Question 1</h1>
+                            <ul id="answers">
+                                <li class="answer wrong">
+                                    Answer 1
+                                </li>
+                                <li class="answer correct">
+                                    Answer 2
+                                </li>
+                                <li class="answer wrong">
+                                    Answer 3
+                                </li>
+                                <li class="answer wrong">
+                                    Answer 4
+                                </li>
+                            </ul>
+                        </div>`),
+                      $(`
+                        <div id="slide">
+                            <h1 class="text-center">Question 2</h1>
+                            <ul id="answers">
+                                <li class="answer" id="answer1">
+                                    Answer 1
+                                </li>
+                                <li class="answer" id="answer2">
+                                    Answer 2
+                                </li>
+                                <li class="answer" id="answer3">
+                                    Answer 3
+                                </li>
+                                <li class="answer" id="answer4">
+                                    Answer 4
+                                </li>
+                            </ul>
+                        </div>`)
     ];
-
-    // const _TIMEUP is an HTML element that will display when the user gets a question wrong
-    // due to time elapsing
     const _TIMEUP = $(`
         <div id="slide">
-            <h1 class="text-center timeUp">Time's Up!</h1>
+            <h1 class="text-center gotItWrong">Time's Up!</h1>
             <p class="text-center">You failed to answer the question on time...</p>
-        </div>`)
-
-    // const _CORRECT is the slide displayed when the question was answered correctly
-    const _CORRECT = $(`
-    
+        </div>
     `);
-
-    // const _WRONG is the slide displayed when the question was answered incorrectly
-
-    // const _FINAL is the final slide to be displayed when quiz is over
+    const _CORRECT = $(`
+        <div id="slide">
+            <h1 class="text-center gotIt">Correct!</h1>
+            <p class="text-center">Great job!</p>
+        </div>
+    `);
+    const _WRONG = $(`
+        <div id="slide">
+            <h1 class="text-center gotItWrong">Wrong Answer</h1>
+            <p class="text-center">You got it wrong...</p>
+        </div>
+    `);
     const _FINAL = $(`
         <div id="slide">
             <h1 class="text-center">Quiz Over!</h1>
@@ -114,11 +75,13 @@ $(function () {
             </ul>
             <h1 class="text-center">Your score: <span id="score"></span></h1>
             <p class="passFailText"></p>
-        </div>`)
+        </div>
+    `);
 
-    /* function questionSwitch will handle the animation between questions. 
-    questionSwitch expects the previous slide as an element and the new slide as an element,
-    both as parameters in that order */
+    let questionNumber = 0;
+    let results = [];
+    let answer;
+
     function questionSwitch (previousQuestionElement, nextQuestionElement) {
 
         // Fade the previous question to 0 opacity, then when it completes,
@@ -137,95 +100,175 @@ $(function () {
 
     }
 
-    /* function checkAnswer looks to see if a question is correct based on which answer
-       is selected in a given questionElement, appends a result to the resultsArray 
-       (will be true for correct or false for incorrect) and returns the array
-       with the new result appended */
-    function checkAnswer (questionElement, resultsArray) {
+    function showHide (id) {
+        if ($(id).hasClass(`show`)) {
+            $(id).removeClass(`show`);
+        }
+        else {
+            $(id).addClass(`show`)
+        }
+    }
+
+    function changeEvent (id, onClickFunction, selector) {
+        console.log(`inside changeEvent`);
+        $(id).off();
+        if (typeof selector != 'undefined') {
+            console.log(`.selector is: ` + selector);
+            $(id).on(`click`, selector, onClickFunction);
+        }
+        else {
+            console.log(`selector is: ` + selector);
+            $(id).on(`click`, onClickFunction);
+        }
+    }
+
+    // Empty
+    function checkAnswer (questionElement) {
         // logic to check questionElement and append result
 
         return resultsArray;
     }
 
-    /* function grade displays the user's score once _FINAL has been displayed */
+    // Empty
     function grade () {
-
+        // todo
     }
 
-    /* function runQuiz runs the quiz!*/
-    function runQuiz () {
+    function nextQuestion (questionElement) {
+        let counter = 30; // Will count seconds;
+        let intervalID, timerID; // Interval ID and Timer ID to be stored so they can be killed
 
-        // Function inits
-        // function nextQuestion is a helper function that runs to streamline question handling
-        // Display's next question and handles timer starting
-        function nextQuestion (questionElement, timerExecution) {
-            let counter = 0; // Will count seconds
-            let intervalID, timerID; // Interval ID and Timer ID to be stored so they can be killed
+        questionNumber++; // Increment questionNumber
 
-            /* function startInterval starts the interval timer running which displays the time in seconds
-               and returns an anonymous function to be executed when the timeout it is passed to ends,
-               a function that kills the interval, gives a wrong result, and displays the timeout*/
-            
-            function startInterval () {
-                // Start an interval that counts down the seconds and return the function to be 
-                // executed with the timeout finishes
-                intervalID = setInterval(function () {
-                    // Use counter to count seconds then display counter
-                    counter++;
-                    $(`#timeDisplay`).text(counter);
-                }, 1 * 1000);
+        console.log("changing answers on click");
+        changeEvent(`#answers`, function () {
+            console.log($(this));
+        }, `.answer`);
 
-                return function () {
-                    clearTimeout(timerID);
-                    clearInterval(intervalID);
-                };
-            }
-            // Transition in new question (old question is current #slide)
-                questionSwitch($(`#slide`), questionElement);
-            // Start the timers
-            timerID = setTimeout(startInterval(), 30 * 1000);
+        $(`#quizButton`).text("Submit Answer");
+        changeEvent(`#quizButton`, function () {
             
-            
-            // A button submission kills both the interval and the 
+        });
+
+        /* function startInterval starts the interval timer running which displays the time in seconds
+           and returns an anonymous function to be executed when the timeout it is passed to ends,
+           a function that kills the interval, gives a wrong result, and displays the timeout*/
+        function startInterval () {
+            // Start an interval that counts down the seconds and return the function to be 
+            // executed with the timeout finishes
+            intervalID = setInterval(function () {
+                // Use counter to count seconds then display counter
+                counter--;
+                $(`#timeDisplay`).text(counter);
+            }, 1 * 1000);
+
+            return function () {
+                clearTimeout(timerID);
+                clearInterval(intervalID);
+                transition(_TIMEUP);
+            };
         }
+        // Transition in new question (old question is current #slide)
+        questionSwitch($(`#slide`), questionElement);
+        // Start the timers
+        timerID = setTimeout(startInterval(), 30 * 1000);
 
-        // Variable declarations, inits
-        // Declare currentQuestion to store question Element, initialize to first question
-        // _QUESTIONS[0]
-        let currentQuestion = _QUESTIONS[0];
-        // Declare results and init to be an empty array. 
-        // Will push true or false to results depending on users selected answer
-        let results = [];
-
-        // Declare wasCorrect, an array that tracks whether the user was correct, incorrect, or
-        // missed the question due to time. Values expected are true (user was correct), 
-
-        // Change Start Quiz button to Submit Answer button
-
-        // Submit Answer handler
-
-        // Quiz Loop
-
-        // When a question ends, display the results slide (_TIMEOUT, _CORRECT, or _WRONG) for 5 seconds
-        setTimeout();
     }
 
-    // ************ Quiz Start! **************
-    
-    // Display the intro slide
+    /* function transition moves slide to given slide (expects _TIMEUP, _CORRECT, _WRONG, or _FINAL) 
+    for 5 seconds, appends result to results based on given slide, then progresses to the next question */
+    function transition (transitionSlide) {
+        if (transitionSlide === _CORRECT) {
+            // Hide the quizButton
+            showHide(`#buttonDisplay`);
+            results.push(true);
+            questionSwitch($(`#slide`), _CORRECT);
+            setTimeout(function () {
+                // questionNumber has been incremented at this point based on nextQuestion
+                // check if all questions have appeared and go to next or _FINAL accordingly
+                if (questionNumber === _QUESTIONS.length) {
+                    transition(_FINAL);
+                }
+                else {
+                    showHide(`#buttonDisplay`)
+                    nextQuestion(_QUESTIONS[questionNumber]);
+                }
+            }, 5 * 1000);
+        }
+        if (transitionSlide === _WRONG) {
+            // Hide the quizButton
+            showHide(`#buttonDisplay`);
+            results.push(false);
+            questionSwitch($(`#slide`), _WRONG);
+            setTimeout(function () {
+                // questionNumber has been incremented at this point based on nextQuestion
+                // check if all questions have appeared and go to next or _FINAL accordingly
+                if (questionNumber === _QUESTIONS.length) {
+                    transition(_FINAL);
+                }
+                else {
+                    showHide(`#buttonDisplay`);
+                    nextQuestion(_QUESTIONS[questionNumber]);
+                }
+            }, 5 * 1000);
+        }
+        if (transitionSlide === _TIMEUP) {
+            // Hide the quizButton
+            showHide(`#buttonDisplay`);
+            results.push(false);
+            questionSwitch($(`#slide`), _TIMEUP);
+            setTimeout(function () {
+                // questionNumber has been incremented at this point based on nextQuestion
+                // check if all questions have appeared and go to next or _FINAL accordingly
+                if (questionNumber === _QUESTIONS.length) {
+                    transition(_FINAL);
+                }
+                else {
+                    showHide(`#buttonDisplay`)
+                    nextQuestion(_QUESTIONS[questionNumber]);
+                }
+            }, 5 * 1000);
+        }
+        if (transitionSlide === _FINAL) {
+            // Display final, tally score, display, change quizButton to restart
+            questionSwitch($(`#slide`), _FINAL);
+
+            // Hide timer
+            showHide(`#timer`);
+
+            //tally score and display
+            // Did good / did bad based on score
+
+            $(`#quizButton`).text(`Restart Quiz!`);
+            changeEvent(`#quizButton`, function () {
+                questionNumber = 0;
+                results = [];
+                // Show timer again
+                showHide(`#timer`);
+                nextQuestion(_QUESTIONS[questionNumber]);
+            });
+            showHide(`#buttonDisplay`);
+
+        }
+    }
+
+    // Make it happen
     questionSwitch($(`#slide`), _INTRO);
 
-    /* Answers handler
-    jQuery on click event handler for elements of #answers */
+    changeEvent(`#quizButton`, function () {
+        showHide(`#timer`);
+        nextQuestion(_QUESTIONS[questionNumber]);
+    });
 
 
+    //////////////////////////////////////
     /* Debug button functionality */
     var counter = 0;
-    $(`#nextQuestion`).on(`click`, function () {
+    /*$(`#nextQuestion`).on(`click`, function () {
         let div = _QUESTIONS[counter];
         nextQuestionTest(div);
         counter++;
-    });
+    });*/
 
     $(`#timesUp`).on(`click`, function () {
         let div = _TIMEUP;
@@ -249,35 +292,5 @@ $(function () {
             $(`#buttonDisplay`).addClass(`show`)
         }
     });
-
-    /* TEST METHOD, DELETE FOR PUBLISH */
-    function nextQuestionTest (questionElement, timerExecution) {
-        let counter = 30; // Will count seconds
-        let intervalID, timerID; // Interval ID and Timer ID to be stored so they can be killed
-
-        /* function startInterval starts the interval timer running which displays the time in seconds
-           and returns an anonymous function to be executed when the timeout it is passed to ends,
-           a function that kills the interval, gives a wrong result, and displays the timeout*/
-        
-        function startInterval () {
-            // Start an interval that counts down the seconds and return the function to be 
-            // executed with the timeout finishes
-            intervalID = setInterval(function () {
-                // Use counter to count seconds then display counter
-                counter--;
-                $(`#timeDisplay`).text(counter);
-            }, 1 * 1000);
-
-            return function () {
-                clearTimeout(timerID);
-                clearInterval(intervalID);
-                questionSwitch($(`#slide`), _TIMEUP);
-            };
-        }
-        // Transition in new question (old question is current #slide)
-        questionSwitch($(`#slide`), questionElement);
-        // Start the timers
-        timerID = setTimeout(startInterval(), 30 * 1000);
-    }
 
 });

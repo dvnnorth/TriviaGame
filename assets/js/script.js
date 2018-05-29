@@ -38,69 +38,83 @@ $(function () {
     // Variable Declarations
 
     // _INTRO is the element that will display the page introduction
-    const _INTRO = $(`<div id="slide">
-                        <h1 class="text-center white">
-                            Yo, I Heard You Like <span class="this">this</span>!
-                        </h1>
-                        <p>
-                              Oh, wait, you don't? You think <span class="this">this</span> is frustrating? Has too many rules? Struggling to remember them all? Or, think you're a master? Think you've got it down pat? That you're hot #@%&amp;? Well step up, ya smug so-and-so, SHOW ME WHAT YOU GOT! <img src="assets/img/cromulon.png" alt="Cromulon" width=15>
-                        </p>
-                      </div>`);
+    const _INTRO = $(`
+        <div id="slide">
+            <h1 class="text-center white">
+                Yo, I Heard You Like <span class="this">this</span>!
+            </h1>
+            <p>
+                Oh, wait, you don't? You think <span class="this">this</span> is frustrating? Has too many rules? Struggling to remember them all? Or, think you're a master? Think you've got it down pat? That you're hot #@%&amp;? Well step up, ya smug so-and-so, SHOW ME WHAT YOU GOT! <img src="assets/img/cromulon.png" alt="Cromulon" width=15>
+            </p>
+        </div>`
+    );
 
     // _QUESTIONS will store all of the questions as HTML Elements
-    const _QUESTIONS = [ $(`<div id="slide">
-                            <h1 class="text-center">Question 1</h1>
-                            <ul>
-                                <li class="answer wrong">
-                                    Answer 1
-                                </li>
-                                <li class="answer correct">
-                                    Answer 2
-                                </li>
-                                <li class="answer wrong">
-                                    Answer 3
-                                </li>
-                                <li class="answer wrong">
-                                    Answer 4
-                                </li>
-                            </ul>
-                        </div>`),
-                        $(`<div id="slide">
-                            <h1 class="text-center">Question 2</h1>
-                            <ul>
-                                <li class="answer" id="answer1">
-                                    Answer 1
-                                </li>
-                                <li class="answer" id="answer2">
-                                    Answer 2
-                                </li>
-                                <li class="answer" id="answer3">
-                                    Answer 3
-                                </li>
-                                <li class="answer" id="answer4">
-                                    Answer 4
-                                </li>
-                            </ul>
-                        </div>`)
+    const _QUESTIONS = [ $(`
+                            <div id="slide">
+                                <h1 class="text-center">Question 1</h1>
+                                <ul>
+                                    <li class="answer wrong">
+                                        Answer 1
+                                    </li>
+                                    <li class="answer correct">
+                                        Answer 2
+                                    </li>
+                                    <li class="answer wrong">
+                                        Answer 3
+                                    </li>
+                                    <li class="answer wrong">
+                                        Answer 4
+                                    </li>
+                                </ul>
+                            </div>`),
+                          $(`
+                            <div id="slide">
+                                <h1 class="text-center">Question 2</h1>
+                                <ul>
+                                    <li class="answer" id="answer1">
+                                        Answer 1
+                                    </li>
+                                    <li class="answer" id="answer2">
+                                        Answer 2
+                                    </li>
+                                    <li class="answer" id="answer3">
+                                        Answer 3
+                                    </li>
+                                    <li class="answer" id="answer4">
+                                        Answer 4
+                                    </li>
+                                </ul>
+                            </div>`)
     ];
 
     // const _TIMEUP is an HTML element that will display when the user gets a question wrong
     // due to time elapsing
-    const _TIMEUP = $(`<div id="slide">
-                            <h1 class="text-center timeUp">Time's Up!</h1>
-                            <p class="text-center">You failed to answer the question on time...</p>
-                        </div>`)
+    const _TIMEUP = $(`
+        <div id="slide">
+            <h1 class="text-center timeUp">Time's Up!</h1>
+            <p class="text-center">You failed to answer the question on time...</p>
+        </div>`)
 
-    const _FINAL = $(`<div id="slide">
-                            <h1 class="text-center">Quiz Over!</h1>
-                            <p class="text-center">Alright, lets see how you did!</p>
-                            <ul id="results">
-                                <li style="list-style-type:none">You got <span id="correct"></span> questions correct!</li>
-                                <li style="list-style-type:none">You got <span id="wrong"></span> questions wrong...</li>
-                            </ul>
-                            <h1 class="text-center">Your score: <span id="score"></span></h1>
-                            <p class="passFailText"></p>
-                      </div>`)
+    // const _CORRECT is the slide displayed when the question was answered correctly
+    const _CORRECT = $(`
+    
+    `);
+
+    // const _WRONG is the slide displayed when the question was answered incorrectly
+
+    // const _FINAL is the final slide to be displayed when quiz is over
+    const _FINAL = $(`
+        <div id="slide">
+            <h1 class="text-center">Quiz Over!</h1>
+            <p class="text-center">Alright, lets see how you did!</p>
+            <ul id="results">
+                <li style="list-style-type:none">You got <span id="correct"></span> questions correct!</li>
+                <li style="list-style-type:none">You got <span id="wrong"></span> questions wrong...</li>
+            </ul>
+            <h1 class="text-center">Your score: <span id="score"></span></h1>
+            <p class="passFailText"></p>
+        </div>`)
 
     /* function questionSwitch will handle the animation between questions. 
     questionSwitch expects the previous slide as an element and the new slide as an element,
@@ -145,9 +159,34 @@ $(function () {
         // function nextQuestion is a helper function that runs to streamline question handling
         // Display's next question and handles timer starting
         function nextQuestion (questionElement, timerExecution) {
-            // Transition in new question (old question is current #questionWrapper)
+            let counter = 0; // Will count seconds
+            let intervalID, timerID; // Interval ID and Timer ID to be stored so they can be killed
 
-            // Start the timer
+            /* function startInterval starts the interval timer running which displays the time in seconds
+               and returns an anonymous function to be executed when the timeout it is passed to ends,
+               a function that kills the interval, gives a wrong result, and displays the timeout*/
+            
+            function startInterval () {
+                // Start an interval that counts down the seconds and return the function to be 
+                // executed with the timeout finishes
+                intervalID = setInterval(function () {
+                    // Use counter to count seconds then display counter
+                    counter++;
+                    $(`#timeDisplay`).text(counter);
+                }, 1 * 1000);
+
+                return function () {
+                    clearTimeout(timerID);
+                    clearInterval(intervalID);
+                };
+            }
+            // Transition in new question (old question is current #slide)
+                questionSwitch($(`#slide`), questionElement);
+            // Start the timers
+            timerID = setTimeout(startInterval(), 30 * 1000);
+            
+            
+            // A button submission kills both the interval and the 
         }
 
         // Variable declarations, inits
@@ -166,6 +205,9 @@ $(function () {
         // Submit Answer handler
 
         // Quiz Loop
+
+        // When a question ends, display the results slide (_TIMEOUT, _CORRECT, or _WRONG) for 5 seconds
+        setTimeout();
     }
 
     // ************ Quiz Start! **************
@@ -181,7 +223,7 @@ $(function () {
     var counter = 0;
     $(`#nextQuestion`).on(`click`, function () {
         let div = _QUESTIONS[counter];
-        questionSwitch($(`#slide`), div);
+        nextQuestionTest(div);
         counter++;
     });
 
@@ -207,5 +249,35 @@ $(function () {
             $(`#buttonDisplay`).addClass(`show`)
         }
     });
+
+    /* TEST METHOD, DELETE FOR PUBLISH */
+    function nextQuestionTest (questionElement, timerExecution) {
+        let counter = 30; // Will count seconds
+        let intervalID, timerID; // Interval ID and Timer ID to be stored so they can be killed
+
+        /* function startInterval starts the interval timer running which displays the time in seconds
+           and returns an anonymous function to be executed when the timeout it is passed to ends,
+           a function that kills the interval, gives a wrong result, and displays the timeout*/
+        
+        function startInterval () {
+            // Start an interval that counts down the seconds and return the function to be 
+            // executed with the timeout finishes
+            intervalID = setInterval(function () {
+                // Use counter to count seconds then display counter
+                counter--;
+                $(`#timeDisplay`).text(counter);
+            }, 1 * 1000);
+
+            return function () {
+                clearTimeout(timerID);
+                clearInterval(intervalID);
+                questionSwitch($(`#slide`), _TIMEUP);
+            };
+        }
+        // Transition in new question (old question is current #slide)
+        questionSwitch($(`#slide`), questionElement);
+        // Start the timers
+        timerID = setTimeout(startInterval(), 30 * 1000);
+    }
 
 });

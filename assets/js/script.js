@@ -53,7 +53,13 @@ $(function () {
                 Yo, I Heard You Like <span class="this">this</span>!
             </h1>
             <p>
-                Oh, wait, you don't? You think <span class="this">this</span> is frustrating? Has too many rules? Struggling to remember them all? Or, think you're a master? Think you've got it down pat? That you're hot #@%&amp;? Well step up, ya smug so-and-so, SHOW ME WHAT YOU GOT! <img src="assets/img/cromulon.png" alt="Cromulon" width=15>
+                Oh, wait, you don't? You think <span class="this">this</span> is frustrating? Has too many rules? Struggling to remember them all? Or, think you're a master? Think you've got it down pat? That you're hot #@%&amp;? Well have I got the quiz for you!
+            </p>
+            <p>
+                This quiz will cover <span class="this">this</span> and its behavior in ten different contexts across ten questions. You These code snippets were taken from <a href="https://www.zeolearn.com/magazine/understanding-the-this-keyword-in-javascript" target="_blank">this article from Zeolearn</a> and from the course materials i
+            </p>
+            <p> 
+                Now then, step up and SHOW ME WHAT YOU GOT! <img src="assets/img/cromulon.png" alt="Cromulon" width=15>
             </p>
         </div>`
     );
@@ -70,7 +76,6 @@ $(function () {
     // answer bank and have a scramble answer that pushes
     // answers randomly to question list then pushes
     // which index is correct to an answer_key array
-
     const _QUESTIONS = [ $(`
                         <div id="slide">
                             <h1 class="text-center">Question 1</h1>
@@ -314,12 +319,13 @@ $(function () {
 
     // Helper function to toggle Bootstrap collapsables by adding or removing .show based on it existing or not
     function showHide (id) {
-        if ($(id).hasClass(`show`)) {
+        $(id).collapse(`toggle`);
+        /*if ($(id).hasClass(`show`)) {
             $(id).removeClass(`show`);
         }
         else {
             $(id).addClass(`show`)
-        }
+        }*/
     }
 
     // Helper function to handle event listener setting and resetting
@@ -403,7 +409,6 @@ $(function () {
         }
 
         // Reveal the quizButton and timer
-        showHide(`#buttonDisplay`);
         showHide(`#timer`);
 
         // Transition in new question (old question is current #slide)
@@ -471,11 +476,12 @@ $(function () {
     function transition (transitionSlide) {
         if (transitionSlide === _CORRECT) {
             // Hide the quizButton and timer
-            showHide(`#buttonDisplay`);
+            showHide(`#quizButton`);
             showHide(`#timer`);
 
             questionSwitch($(`#slide`), _CORRECT);
             setTimeout(function () {
+                showHide(`#quizButton`);
                 // questionNumber has been incremented at this point based on nextQuestion
                 // check if all questions have appeared and go to next or _FINAL accordingly
                 if (questionNumber === _QUESTIONS.length) {
@@ -488,11 +494,12 @@ $(function () {
         }
         if (transitionSlide === _WRONG) {
             // Hide the quizButton and timer
-            showHide(`#buttonDisplay`);
+            showHide(`#quizButton`);
             showHide(`#timer`);
 
             questionSwitch($(`#slide`), _WRONG);
             setTimeout(function () {
+                showHide(`#quizButton`);
                 // questionNumber has been incremented at this point based on nextQuestion
                 // check if all questions have appeared and go to next or _FINAL accordingly
                 if (questionNumber === _QUESTIONS.length) {
@@ -505,11 +512,12 @@ $(function () {
         }
         if (transitionSlide === _TIMEUP) {
             // Hide the quizButton and timer
-            showHide(`#buttonDisplay`);
+            showHide(`#quizButton`);
             showHide(`#timer`);
 
             questionSwitch($(`#slide`), _TIMEUP);
             setTimeout(function () {
+                showHide(`#quizButton`);
                 // questionNumber has been incremented at this point based on nextQuestion
                 // check if all questions have appeared and go to next or _FINAL accordingly
                 if (questionNumber === _QUESTIONS.length) {
@@ -531,10 +539,10 @@ $(function () {
             changeEvent(`#quizButton`, function () {
                 questionNumber = 0;
                 results = [];
-                showHide(`#buttonDisplay`); // hiding again, will be revealed in nextQuestion
+                showHide(`#quizButton`); // hiding again, will be revealed in nextQuestion
                 nextQuestion(_QUESTIONS[questionNumber]);
             });
-            showHide(`#buttonDisplay`);
+            showHide(`#quizButton`);
 
             // Grade and display
             grade();
@@ -546,7 +554,6 @@ $(function () {
     questionSwitch($(`#slide`), _INTRO);
 
     changeEvent(`#quizButton`, function () {
-        showHide(`#buttonDisplay`); // Needs to be hidden, will reappear in nextQuestion
         nextQuestion(_QUESTIONS[questionNumber]);
     });
 });

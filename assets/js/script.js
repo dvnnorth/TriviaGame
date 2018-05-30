@@ -75,16 +75,16 @@ $(function () {
                         <div id="slide">
                             <h1 class="text-center">Question 1</h1>
                             <ul id="answers">
-                                <li class="answer wrong">
+                                <li class="answer">
                                     Answer 1
                                 </li>
                                 <li class="answer correct">
                                     Answer 2
                                 </li>
-                                <li class="answer wrong">
+                                <li class="answer">
                                     Answer 3
                                 </li>
-                                <li class="answer wrong">
+                                <li class="answer">
                                     Answer 4
                                 </li>
                             </ul>
@@ -93,13 +93,13 @@ $(function () {
                         <div id="slide">
                             <h1 class="text-center">Question 2</h1>
                             <ul id="answers">
-                                <li class="answer wrong" id="answer1">
+                                <li class="answer" id="answer1">
                                     Answer 1
                                 </li>
-                                <li class="answer wrong" id="answer2">
+                                <li class="answer" id="answer2">
                                     Answer 2
                                 </li>
-                                <li class="answer wrong" id="answer3">
+                                <li class="answer" id="answer3">
                                     Answer 3
                                 </li>
                                 <li class="answer correct" id="answer4">
@@ -114,13 +114,13 @@ $(function () {
                                 <li class="answer correct" id="answer1">
                                     Answer 1
                                 </li>
-                                <li class="answer wrong" id="answer2">
+                                <li class="answer" id="answer2">
                                     Answer 2
                                 </li>
-                                <li class="answer wrong" id="answer3">
+                                <li class="answer" id="answer3">
                                     Answer 3
                                 </li>
-                                <li class="answer wrong" id="answer4">
+                                <li class="answer" id="answer4">
                                     Answer 4
                                 </li>
                             </ul>
@@ -129,16 +129,16 @@ $(function () {
                         <div id="slide">
                             <h1 class="text-center">Question 4</h1>
                             <ul id="answers">
-                                <li class="answer wrong" id="answer1">
+                                <li class="answer" id="answer1">
                                     Answer 1
                                 </li>
                                 <li class="answer correct" id="answer2">
                                     Answer 2
                                 </li>
-                                <li class="answer wrong" id="answer3">
+                                <li class="answer" id="answer3">
                                     Answer 3
                                 </li>
-                                <li class="answer wrong" id="answer4">
+                                <li class="answer" id="answer4">
                                     Answer 4
                                 </li>
                             </ul>
@@ -150,13 +150,13 @@ $(function () {
                                 <li class="answer correct" id="answer1">
                                     Answer 1
                                 </li>
-                                <li class="answer wrong" id="answer2">
+                                <li class="answer" id="answer2">
                                     Answer 2
                                 </li>
-                                <li class="answer wrong" id="answer3">
+                                <li class="answer" id="answer3">
                                     Answer 3
                                 </li>
-                                <li class="answer wrong" id="answer4">
+                                <li class="answer" id="answer4">
                                     Answer 4
                                 </li>
                             </ul>
@@ -168,13 +168,13 @@ $(function () {
                                 <li class="answer correct" id="answer1">
                                     Answer 1
                                 </li>
-                                <li class="answer wrong" id="answer2">
+                                <li class="answer" id="answer2">
                                     Answer 2
                                 </li>
-                                <li class="answer wrong" id="answer3">
+                                <li class="answer" id="answer3">
                                     Answer 3
                                 </li>
-                                <li class="answer wrong" id="answer4">
+                                <li class="answer" id="answer4">
                                     Answer 4
                                 </li>
                             </ul>
@@ -183,16 +183,16 @@ $(function () {
                         <div id="slide">
                             <h1 class="text-center">Question 7</h1>
                             <ul id="answers">
-                                <li class="answer wrong" id="answer1">
+                                <li class="answer" id="answer1">
                                     Answer 1
                                 </li>
-                                <li class="answer wrong" id="answer2">
+                                <li class="answer" id="answer2">
                                     Answer 2
                                 </li>
                                 <li class="answer correct" id="answer3">
                                     Answer 3
                                 </li>
-                                <li class="answer wrong" id="answer4">
+                                <li class="answer" id="answer4">
                                     Answer 4
                                 </li>
                             </ul>
@@ -201,13 +201,13 @@ $(function () {
                         <div id="slide">
                             <h1 class="text-center">Question 8</h1>
                             <ul id="answers">
-                                <li class="answer wrong" id="answer1">
+                                <li class="answer" id="answer1">
                                     Answer 1
                                 </li>
-                                <li class="answer wrong" id="answer2">
+                                <li class="answer" id="answer2">
                                     Answer 2
                                 </li>
-                                <li class="answer wrong" id="answer3">
+                                <li class="answer" id="answer3">
                                     Answer 3
                                 </li>
                                 <li class="answer correct" id="answer4">
@@ -219,16 +219,16 @@ $(function () {
                         <div id="slide">
                             <h1 class="text-center">Question 9</h1>
                             <ul id="answers">
-                                <li class="answer wrong" id="answer1">
+                                <li class="answer" id="answer1">
                                     Answer 1
                                 </li>
-                                <li class="answer wrong" id="answer2">
+                                <li class="answer" id="answer2">
                                     Answer 2
                                 </li>
                                 <li class="answer correct" id="answer3">
                                     Answer 3
                                 </li>
-                                <li class="answer wrong" id="answer4">
+                                <li class="answer" id="answer4">
                                     Answer 4
                                 </li>
                             </ul>
@@ -237,16 +237,16 @@ $(function () {
                         <div id="slide">
                             <h1 class="text-center">Question 10</h1>
                             <ul id="answers">
-                                <li class="answer wrong" id="answer1">
+                                <li class="answer" id="answer1">
                                     Answer 1
                                 </li>
-                                <li class="answer wrong" id="answer2">
+                                <li class="answer" id="answer2">
                                     Answer 2
                                 </li>
                                 <li class="answer correct" id="answer3">
                                     Answer 3
                                 </li>
-                                <li class="answer wrong" id="answer4">
+                                <li class="answer" id="answer4">
                                     Answer 4
                                 </li>
                             </ul>
@@ -256,7 +256,7 @@ $(function () {
     const _TIMEUP = $(`
         <div id="slide">
             <h1 class="text-center gotItWrong">Time's Up!</h1>
-            <p class="text-center">You failed to answer the question on time...</p>
+            <p class="text-center">You failed to answer the question in time...</p>
         </div>
     `);
     const _CORRECT = $(`
@@ -275,10 +275,8 @@ $(function () {
         <div id="slide">
             <h1 class="text-center">Quiz Over!</h1>
             <p class="text-center">Alright, lets see how you did!</p>
-            <ul id="results">
-                <li style="list-style-type:none">You got <span id="correct"></span> questions correct!</li>
-                <li style="list-style-type:none">You got <span id="wrong"></span> questions wrong...</li>
-            </ul>
+            <p class="text-center">You got <span id="correct"></span> questions correct!</p>
+            <p class="text-center">You got <span id="wrong"></span> questions wrong...</p>
             <h1 class="text-center">Your score: <span id="score"></span></h1>
             <p class="passFailText"></p>
         </div>
@@ -286,7 +284,7 @@ $(function () {
 
     let questionNumber = 0;
     let results = [];
-    let answer;
+    let answer = ``;
 
     function questionSwitch (previousQuestionElement, nextQuestionElement) {
 
@@ -306,6 +304,12 @@ $(function () {
 
     }
 
+    // Helper function to delete all text from #timeDisplay
+    function clearTimeDisplay () {
+        $(`#timeDisplay`).text(``);
+    }
+
+    // Helper function to toggle Bootstrap collapsables by adding or removing .show based on it existing or not
     function showHide (id) {
         if ($(id).hasClass(`show`)) {
             $(id).removeClass(`show`);
@@ -315,6 +319,7 @@ $(function () {
         }
     }
 
+    // Helper function to handle event listener setting and resetting
     function changeEvent (id, onClickFunction, selector) {
         if (typeof selector != `undefined`) {
             $(document).off(`click`, (id + `>` + selector));
@@ -326,6 +331,8 @@ $(function () {
         }
     }
 
+    // function nextQuestion is all of the quiz logic that should run every time a new question slide is displayed
+    // nextQuestion called every time a new question is to appear. Increments questionNumber to keep quiz moving
     function nextQuestion (questionElement) {
         let counter = 30; // Will count seconds;
         let intervalID, timerID; // Interval ID and Timer ID to be stored so they can be killed
@@ -344,24 +351,76 @@ $(function () {
                 $(`#timeDisplay`).text(counter);
             }, 1 * 1000);
 
+            // Return anonymous function that clears interval and timeout and transitions to _TIMEUP slide when the timer runs out
             return function () {
                 clearTimeout(timerID);
                 clearInterval(intervalID);
+                clearTimeDisplay();
+                answer = ``;
                 transition(_TIMEUP);
             };
         }
+
+        // Reveal the quizButton and timer
+        showHide(`#buttonDisplay`);
+        showHide(`#timer`);
+
         // Transition in new question (old question is current #slide)
         questionSwitch($(`#slide`), questionElement);
 
+        // Reset event handler for clicking answers
         changeEvent(`#answers`, function () {
+            // Clear all elements in #answers of .selected
+            $(`#answers`).children().each(function() {
+                $(this).removeClass(`selected`);
+            });
+
+            // add .selected to this element to make sure that selected answer is highlighted
+            $(this).addClass(`selected`);
             console.log($(this));
+
         }, `.answer`);
 
         // Start the timers
         timerID = setTimeout(startInterval(), 30 * 1000);
 
+        // Make #quizButton display "Submit Answer"
+        $(`#quizButton`).text(`Submit Answer`);
         // When the quiz button, now submit answer, is pressed, kill the timers, check the answer, and start transition with the
         // _CORRECT or _WRONG slide based on selected answer
+        changeEvent(`#quizButton`, function () {
+            // Handle answer selection
+            $(`#answers`).children().each(function() {
+                // if the current child of #answers has class selected
+                if ($(this).hasClass(`selected`)) {
+                    // set answer to this
+                    answer = $(this);
+                }
+            });
+
+            // If answer is blank, jiggle button (jQuery UI)
+            if (answer === ``) {
+                $(`#quizButton`).effect(`shake`);
+            }
+            // Else If answer has been selected and is correct
+            else if (answer.hasClass(`correct`)) {
+                results.push(true);
+                clearTimeout(timerID);
+                clearInterval(intervalID);
+                clearTimeDisplay();
+                answer = ``;
+                transition(_CORRECT);
+            }
+            // Else (is selected and wrong)
+            else {
+                results.push(false);
+                clearTimeout(timerID);
+                clearInterval(intervalID);
+                clearTimeDisplay();
+                answer = ``;
+                transition(_WRONG);
+            }
+        });
 
     }
 
@@ -369,8 +428,10 @@ $(function () {
     for 5 seconds, appends result to results based on given slide, then progresses to the next question */
     function transition (transitionSlide) {
         if (transitionSlide === _CORRECT) {
-            // Hide the quizButton
+            // Hide the quizButton and timer
             showHide(`#buttonDisplay`);
+            showHide(`#timer`);
+
             results.push(true);
             questionSwitch($(`#slide`), _CORRECT);
             setTimeout(function () {
@@ -380,14 +441,15 @@ $(function () {
                     transition(_FINAL);
                 }
                 else {
-                    showHide(`#buttonDisplay`)
                     nextQuestion(_QUESTIONS[questionNumber]);
                 }
-            }, 5 * 1000);
+            }, 3 * 1000);
         }
         if (transitionSlide === _WRONG) {
-            // Hide the quizButton
+            // Hide the quizButton and timer
             showHide(`#buttonDisplay`);
+            showHide(`#timer`);
+
             results.push(false);
             questionSwitch($(`#slide`), _WRONG);
             setTimeout(function () {
@@ -397,14 +459,15 @@ $(function () {
                     transition(_FINAL);
                 }
                 else {
-                    showHide(`#buttonDisplay`);
                     nextQuestion(_QUESTIONS[questionNumber]);
                 }
-            }, 5 * 1000);
+            }, 3 * 1000);
         }
         if (transitionSlide === _TIMEUP) {
-            // Hide the quizButton
+            // Hide the quizButton and timer
             showHide(`#buttonDisplay`);
+            showHide(`#timer`);
+
             results.push(false);
             questionSwitch($(`#slide`), _TIMEUP);
             setTimeout(function () {
@@ -414,17 +477,13 @@ $(function () {
                     transition(_FINAL);
                 }
                 else {
-                    showHide(`#buttonDisplay`)
                     nextQuestion(_QUESTIONS[questionNumber]);
                 }
-            }, 5 * 1000);
+            }, 3 * 1000);
         }
         if (transitionSlide === _FINAL) {
             // Display final, tally score, display, change quizButton to restart
             questionSwitch($(`#slide`), _FINAL);
-
-            // Hide timer
-            showHide(`#timer`);
 
             //tally score and display
             // Did good / did bad based on score
@@ -433,11 +492,12 @@ $(function () {
             changeEvent(`#quizButton`, function () {
                 questionNumber = 0;
                 results = [];
-                // Show timer again
-                showHide(`#timer`);
+                showHide(`#buttonDisplay`); // hiding again, will be revealed in nextQuestion
                 nextQuestion(_QUESTIONS[questionNumber]);
             });
             showHide(`#buttonDisplay`);
+
+            console.log(results.toString());
 
         }
     }
@@ -446,7 +506,7 @@ $(function () {
     questionSwitch($(`#slide`), _INTRO);
 
     changeEvent(`#quizButton`, function () {
-        showHide(`#timer`);
+        showHide(`#buttonDisplay`); // Needs to be hidden, will reappear in nextQuestion
         nextQuestion(_QUESTIONS[questionNumber]);
     });
 });

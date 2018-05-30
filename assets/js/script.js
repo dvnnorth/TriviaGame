@@ -65,6 +65,7 @@ $(function () {
                             <p>
                                 What will the following code snippet log to the console? 
                             </p>
+                            <script src="https://gist.github.com/dvnnorth/8d831b5e32243b66595d0965a54e1baa.js"></script>
                             <hr>
                             <ul id="answers">
                                 <li class="answer">
@@ -82,41 +83,39 @@ $(function () {
                             </ul>
                         </div>
                     `), $(`
-                        <div id="slide">
-                            <h1 class="text-center">Question 2</h1>
-                            <ul id="answers">
-                                <li class="answer">
-                                    Answer 1
-                                </li>
-                                <li class="answer">
-                                    Answer 2
-                                </li>
-                                <li class="answer">
-                                    Answer 3
-                                </li>
-                                <li class="answer correct">
-                                    Answer 4
-                                </li>
-                            </ul>
-                        </div>
+                    <div id="slide">
+                        <h1 class="text-center">Question 2</h1>
+                        <p>
+                            What will the following code snippet log to the console? 
+                        </p>
+                        <script src="https://gist.github.com/dvnnorth/ad149534cc2dd6d9c5f0f5b71606d923.js"></script>
+                        <hr>
+                        <ul id="answers">
+                            <li class="answer correct">
+                                <pre>true</pre>
+                            </li>
+                            <li class="answer">
+                                <pre>false</pre>
+                            </li>
+                        </ul>
+                    </div> 
                     `), $(`
-                        <div id="slide">
-                            <h1 class="text-center">Question 3</h1>
-                            <ul id="answers">
-                                <li class="answer correct">
-                                    Answer 1
-                                </li>
-                                <li class="answer">
-                                    Answer 2
-                                </li>
-                                <li class="answer">
-                                    Answer 3
-                                </li>
-                                <li class="answer">
-                                    Answer 4
-                                </li>
-                            </ul>
-                        </div>
+                    <div id="slide">
+                        <h1 class="text-center">Question 3</h1>
+                        <p>
+                            What will the following code snippet log to the console? 
+                        </p>
+                        <script src="https://gist.github.com/dvnnorth/9a9e69c55f2bd519dc9444ed52f783d6.js"></script>
+                        <hr>
+                        <ul id="answers">
+                            <li class="answer">
+                                <pre>true</pre>
+                            </li>
+                            <li class="answer correct">
+                                <pre>false</pre>
+                            </li>
+                        </ul>
+                    </div>
                     `), $(`
                         <div id="slide">
                             <h1 class="text-center">Question 4</h1>

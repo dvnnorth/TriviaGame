@@ -93,16 +93,16 @@ $(function () {
                         <div id="slide">
                             <h1 class="text-center">Question 2</h1>
                             <ul id="answers">
-                                <li class="answer" id="answer1">
+                                <li class="answer">
                                     Answer 1
                                 </li>
-                                <li class="answer" id="answer2">
+                                <li class="answer">
                                     Answer 2
                                 </li>
-                                <li class="answer" id="answer3">
+                                <li class="answer">
                                     Answer 3
                                 </li>
-                                <li class="answer correct" id="answer4">
+                                <li class="answer correct">
                                     Answer 4
                                 </li>
                             </ul>
@@ -111,16 +111,16 @@ $(function () {
                         <div id="slide">
                             <h1 class="text-center">Question 3</h1>
                             <ul id="answers">
-                                <li class="answer correct" id="answer1">
+                                <li class="answer correct">
                                     Answer 1
                                 </li>
-                                <li class="answer" id="answer2">
+                                <li class="answer">
                                     Answer 2
                                 </li>
-                                <li class="answer" id="answer3">
+                                <li class="answer">
                                     Answer 3
                                 </li>
-                                <li class="answer" id="answer4">
+                                <li class="answer">
                                     Answer 4
                                 </li>
                             </ul>
@@ -129,16 +129,16 @@ $(function () {
                         <div id="slide">
                             <h1 class="text-center">Question 4</h1>
                             <ul id="answers">
-                                <li class="answer" id="answer1">
+                                <li class="answer">
                                     Answer 1
                                 </li>
-                                <li class="answer correct" id="answer2">
+                                <li class="answer correct">
                                     Answer 2
                                 </li>
-                                <li class="answer" id="answer3">
+                                <li class="answer">
                                     Answer 3
                                 </li>
-                                <li class="answer" id="answer4">
+                                <li class="answer">
                                     Answer 4
                                 </li>
                             </ul>
@@ -147,16 +147,16 @@ $(function () {
                         <div id="slide">
                             <h1 class="text-center">Question 5</h1>
                             <ul id="answers">
-                                <li class="answer correct" id="answer1">
+                                <li class="answer correct">
                                     Answer 1
                                 </li>
-                                <li class="answer" id="answer2">
+                                <li class="answer">
                                     Answer 2
                                 </li>
-                                <li class="answer" id="answer3">
+                                <li class="answer">
                                     Answer 3
                                 </li>
-                                <li class="answer" id="answer4">
+                                <li class="answer">
                                     Answer 4
                                 </li>
                             </ul>
@@ -165,16 +165,16 @@ $(function () {
                         <div id="slide">
                             <h1 class="text-center">Question 6</h1>
                             <ul id="answers">
-                                <li class="answer correct" id="answer1">
+                                <li class="answer correct">
                                     Answer 1
                                 </li>
-                                <li class="answer" id="answer2">
+                                <li class="answer">
                                     Answer 2
                                 </li>
-                                <li class="answer" id="answer3">
+                                <li class="answer">
                                     Answer 3
                                 </li>
-                                <li class="answer" id="answer4">
+                                <li class="answer">
                                     Answer 4
                                 </li>
                             </ul>
@@ -183,16 +183,16 @@ $(function () {
                         <div id="slide">
                             <h1 class="text-center">Question 7</h1>
                             <ul id="answers">
-                                <li class="answer" id="answer1">
+                                <li class="answer">
                                     Answer 1
                                 </li>
-                                <li class="answer" id="answer2">
+                                <li class="answer">
                                     Answer 2
                                 </li>
-                                <li class="answer correct" id="answer3">
+                                <li class="answer correct">
                                     Answer 3
                                 </li>
-                                <li class="answer" id="answer4">
+                                <li class="answer">
                                     Answer 4
                                 </li>
                             </ul>
@@ -201,16 +201,16 @@ $(function () {
                         <div id="slide">
                             <h1 class="text-center">Question 8</h1>
                             <ul id="answers">
-                                <li class="answer" id="answer1">
+                                <li class="answer">
                                     Answer 1
                                 </li>
-                                <li class="answer" id="answer2">
+                                <li class="answer">
                                     Answer 2
                                 </li>
-                                <li class="answer" id="answer3">
+                                <li class="answer">
                                     Answer 3
                                 </li>
-                                <li class="answer correct" id="answer4">
+                                <li class="answer correct">
                                     Answer 4
                                 </li>
                             </ul>
@@ -219,16 +219,16 @@ $(function () {
                         <div id="slide">
                             <h1 class="text-center">Question 9</h1>
                             <ul id="answers">
-                                <li class="answer" id="answer1">
+                                <li class="answer">
                                     Answer 1
                                 </li>
-                                <li class="answer" id="answer2">
+                                <li class="answer">
                                     Answer 2
                                 </li>
-                                <li class="answer correct" id="answer3">
+                                <li class="answer correct">
                                     Answer 3
                                 </li>
-                                <li class="answer" id="answer4">
+                                <li class="answer">
                                     Answer 4
                                 </li>
                             </ul>
@@ -237,16 +237,16 @@ $(function () {
                         <div id="slide">
                             <h1 class="text-center">Question 10</h1>
                             <ul id="answers">
-                                <li class="answer" id="answer1">
+                                <li class="answer">
                                     Answer 1
                                 </li>
-                                <li class="answer" id="answer2">
+                                <li class="answer">
                                     Answer 2
                                 </li>
-                                <li class="answer correct" id="answer3">
+                                <li class="answer correct">
                                     Answer 3
                                 </li>
-                                <li class="answer" id="answer4">
+                                <li class="answer">
                                     Answer 4
                                 </li>
                             </ul>
@@ -331,6 +331,38 @@ $(function () {
         }
     }
 
+    // Helper function to display results after the _FINAL slide has been displayed
+    function grade () {
+        let correct, wrong, score; // Declare score variables
+        correct = wrong = score = 0; // Set them all to zero
+
+        // Tally correct and incorrect
+        results.forEach(function (value) {
+            if (value) {
+                correct++;
+            }
+            else {
+                wrong++;
+            }
+        });
+
+        // Get score
+        score = Math.round((correct / results.length) * 100);
+
+        console.log(correct, wrong, score);
+        console.log($(`#correct`), $(`#wrong`), $(`#score`));
+
+        // Display results
+        let mutation = new MutationObserver(function () {
+            $(`#correct`).text(correct.toString());
+            $(`#wrong`).text(wrong.toString());
+            $(`#score`).text(score.toString());
+            $(`#test`).text(score.toString());
+        });
+        mutation.observe($(`#slide`), {childList: true});
+        
+    }
+
     // function nextQuestion is all of the quiz logic that should run every time a new question slide is displayed
     // nextQuestion called every time a new question is to appear. Increments questionNumber to keep quiz moving
     function nextQuestion (questionElement) {
@@ -353,6 +385,7 @@ $(function () {
 
             // Return anonymous function that clears interval and timeout and transitions to _TIMEUP slide when the timer runs out
             return function () {
+                results.push(false);
                 clearTimeout(timerID);
                 clearInterval(intervalID);
                 clearTimeDisplay();
@@ -432,7 +465,6 @@ $(function () {
             showHide(`#buttonDisplay`);
             showHide(`#timer`);
 
-            results.push(true);
             questionSwitch($(`#slide`), _CORRECT);
             setTimeout(function () {
                 // questionNumber has been incremented at this point based on nextQuestion
@@ -450,7 +482,6 @@ $(function () {
             showHide(`#buttonDisplay`);
             showHide(`#timer`);
 
-            results.push(false);
             questionSwitch($(`#slide`), _WRONG);
             setTimeout(function () {
                 // questionNumber has been incremented at this point based on nextQuestion
@@ -468,7 +499,6 @@ $(function () {
             showHide(`#buttonDisplay`);
             showHide(`#timer`);
 
-            results.push(false);
             questionSwitch($(`#slide`), _TIMEUP);
             setTimeout(function () {
                 // questionNumber has been incremented at this point based on nextQuestion
@@ -498,6 +528,9 @@ $(function () {
             showHide(`#buttonDisplay`);
 
             console.log(results.toString());
+
+            // Grade and display
+            grade();
 
         }
     }

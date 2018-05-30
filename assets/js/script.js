@@ -277,14 +277,15 @@ $(function () {
             <p class="text-center">Alright, lets see how you did!</p>
             <p class="text-center">You got <span id="correct"></span> questions correct!</p>
             <p class="text-center">You got <span id="wrong"></span> questions wrong...</p>
-            <h1 class="text-center">Your score: <span id="score"></span></h1>
-            <p class="passFailText"></p>
+            <h1 class="text-center">Your score: <span id="score"></span>%</h1>
+            <p class="text-center" id="passFailText"></p>
         </div>
     `);
 
-    let questionNumber = 0;
-    let results = [];
-    let answer = ``;
+    let questionNumber = 0; // Tracks index of question array that we're on
+    let results = []; // Holds the results of each answer being correct or not (true or false)
+    let answer = ``; // Will hold the selected answer for grading
+    let slideTransitionComplete = new Event(`transComplete`); // Special event to be triggered when slide transition completes
 
     function questionSwitch (previousQuestionElement, nextQuestionElement) {
 
@@ -299,9 +300,11 @@ $(function () {
             // Append the next question element to the question display
             nextQuestionElement.appendTo(`#questionWrapper`);
             // Fade it in
-            nextQuestionElement.animate({opacity: 1}, 500);
+            nextQuestionElement.animate({opacity: 1}, 500, `swing`, function () {
+                // Transition complete
+                $(document).trigger(`transComplete`);
+            });
         });
-
     }
 
     // Helper function to delete all text from #timeDisplay
@@ -349,18 +352,23 @@ $(function () {
         // Get score
         score = Math.round((correct / results.length) * 100);
 
-        console.log(correct, wrong, score);
-        console.log($(`#correct`), $(`#wrong`), $(`#score`));
-
         // Display results
-        let mutation = new MutationObserver(function () {
+        // This event handling ensures that the slide has completely displayed and the transaction is complete before displaying
+        // the results. Otherwise, doesn't work.
+        $(document).off(`transComplete`);
+        $(document).on(`transComplete`, function () {
             $(`#correct`).text(correct.toString());
             $(`#wrong`).text(wrong.toString());
             $(`#score`).text(score.toString());
-            $(`#test`).text(score.toString());
+            if (parseInt(score) >= 70) {
+                $(`#score`).addClass(`gotIt`);
+                $(`#passFailText`).text(`Well hot shot, you passed! Great job!`);
+            }
+            else {
+                $(`#score`).addClass(`gotItWrong`);
+                $(`#passFailText`).text(`Yikes. Well, you failed. Hit the books and try the quiz again!`);
+            }
         });
-        mutation.observe($(`#slide`), {childList: true});
-        
     }
 
     // function nextQuestion is all of the quiz logic that should run every time a new question slide is displayed
@@ -410,7 +418,6 @@ $(function () {
 
             // add .selected to this element to make sure that selected answer is highlighted
             $(this).addClass(`selected`);
-            console.log($(this));
 
         }, `.answer`);
 
@@ -441,6 +448,7 @@ $(function () {
                 clearTimeout(timerID);
                 clearInterval(intervalID);
                 clearTimeDisplay();
+                answer.removeClass(`selected`);
                 answer = ``;
                 transition(_CORRECT);
             }
@@ -450,6 +458,7 @@ $(function () {
                 clearTimeout(timerID);
                 clearInterval(intervalID);
                 clearTimeDisplay();
+                answer.removeClass(`selected`);
                 answer = ``;
                 transition(_WRONG);
             }
@@ -526,8 +535,6 @@ $(function () {
                 nextQuestion(_QUESTIONS[questionNumber]);
             });
             showHide(`#buttonDisplay`);
-
-            console.log(results.toString());
 
             // Grade and display
             grade();

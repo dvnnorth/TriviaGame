@@ -78,7 +78,7 @@ p {
     border-radius: 5px;
 }
 
-.gotItWrong {
+.gotItWrong, #wrong {
     color: #f00;
     text-shadow:
     -1px -1px 0 #000,  
@@ -87,7 +87,7 @@ p {
       1px 1px 0 #000;
 }
 
-.gotIt {
+.gotIt, #correct {
     color: #0f0;
     text-shadow:
     -1px -1px 0 #000,  

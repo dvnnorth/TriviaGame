@@ -1,5 +1,52 @@
+/* From the specification: 
+    
+    * You'll create a trivia game that shows only one question until the player answers it or their time runs out.
+
+    * If the player selects the correct answer, show a screen congratulating them for choosing the right option. After a few seconds, display the next question -- do this without user input.
+
+    * The scenario is similar for wrong answers and time-outs.
+
+            - If the player runs out of time, tell the player that time's up and display the correct answer. Wait a few seconds, then show the next question.
+            
+            - If the player chooses the wrong answer, tell the player they selected the wrong option and then display the correct answer. Wait a few seconds, then show the next question.
+
+    * On the final screen, show the number of correct answers, incorrect answers, and an option to restart the game (without reloading the page). */
+
+/* Flow:
+ * 
+ * Each collection of HTML elements displayed on each transition will be considered a "slide"
+ * const slides for intro, time's up, question correct, question incorrect, and final display
+ * const array of slides for questions. Answers will have class answer and correct or wrong
+ * 
+ *  
+ * Display intro slide with start quiz button. User clicks "Start Quiz" button
+ * 
+ * Timer displays, button turns to "Submit Answer" button
+ * 
+ * Loop this for all questions:
+ * 
+ *      Question displays. One of three possible outcomes:
+ * 
+ *           User selects and answer and clicks submit. They're either incorrect or correct
+ * 
+ *              Outcome 1) If correct, they get correct slide and results array gets true pushed to it
+ * 
+ *              Outcome 2) If incorrect, they get incorrect slide and results array gets false pushed to it
+ * 
+ *           Or, Outcome 3) The user doesn't select and submit an answer in time in which case the timeout
+ *           slide is displayed and false is pushed to results array
+ * 
+ *      Few seconds pass, then on to next question unless there are no more question slides left, in which case
+ * 
+ * Display the final slide and then insert totals. Then make button the Restart Quiz button which resets 
+ * the variables and starts the quiz over again.
+ */ 
+
+// document on load wrapper
 $(function () {
 
+    // Slides
+    // _INTRO is the slide that will display the page introduction
     const _INTRO = $(`
         <div id="slide">
             <h1 class="text-center white">
@@ -10,6 +57,20 @@ $(function () {
             </p>
         </div>`
     );
+    // _QUESTIONS is an array of slides that each represent a question.
+    // Would like this massive block in a separate file,
+    // but AJAX requests can't be made to local files...
+    // I guess it would work after being deployed?
+    // Also wish I could move this to bottom, but wont
+    // be hoisted...
+    // Now that I think of it, using classes to determine
+    // whether an answer is right or wrong enables
+    // cheating quite easily with the dev tools...
+    // Would be nice to obfuscate this. Could have
+    // answer bank and have a scramble answer that pushes
+    // answers randomly to question list then pushes
+    // which index is correct to an answer_key array
+
     const _QUESTIONS = [ $(`
                         <div id="slide">
                             <h1 class="text-center">Question 1</h1>
@@ -27,25 +88,170 @@ $(function () {
                                     Answer 4
                                 </li>
                             </ul>
-                        </div>`),
-                      $(`
+                        </div>
+                    `), $(`
                         <div id="slide">
                             <h1 class="text-center">Question 2</h1>
                             <ul id="answers">
-                                <li class="answer" id="answer1">
+                                <li class="answer wrong" id="answer1">
                                     Answer 1
                                 </li>
-                                <li class="answer" id="answer2">
+                                <li class="answer wrong" id="answer2">
                                     Answer 2
                                 </li>
-                                <li class="answer" id="answer3">
+                                <li class="answer wrong" id="answer3">
                                     Answer 3
                                 </li>
-                                <li class="answer" id="answer4">
+                                <li class="answer correct" id="answer4">
                                     Answer 4
                                 </li>
                             </ul>
-                        </div>`)
+                        </div>
+                    `), $(`
+                        <div id="slide">
+                            <h1 class="text-center">Question 3</h1>
+                            <ul id="answers">
+                                <li class="answer correct" id="answer1">
+                                    Answer 1
+                                </li>
+                                <li class="answer wrong" id="answer2">
+                                    Answer 2
+                                </li>
+                                <li class="answer wrong" id="answer3">
+                                    Answer 3
+                                </li>
+                                <li class="answer wrong" id="answer4">
+                                    Answer 4
+                                </li>
+                            </ul>
+                        </div>
+                    `), $(`
+                        <div id="slide">
+                            <h1 class="text-center">Question 4</h1>
+                            <ul id="answers">
+                                <li class="answer wrong" id="answer1">
+                                    Answer 1
+                                </li>
+                                <li class="answer correct" id="answer2">
+                                    Answer 2
+                                </li>
+                                <li class="answer wrong" id="answer3">
+                                    Answer 3
+                                </li>
+                                <li class="answer wrong" id="answer4">
+                                    Answer 4
+                                </li>
+                            </ul>
+                        </div>
+                    `), $(`
+                        <div id="slide">
+                            <h1 class="text-center">Question 5</h1>
+                            <ul id="answers">
+                                <li class="answer correct" id="answer1">
+                                    Answer 1
+                                </li>
+                                <li class="answer wrong" id="answer2">
+                                    Answer 2
+                                </li>
+                                <li class="answer wrong" id="answer3">
+                                    Answer 3
+                                </li>
+                                <li class="answer wrong" id="answer4">
+                                    Answer 4
+                                </li>
+                            </ul>
+                        </div>                    
+                    `), $(`
+                        <div id="slide">
+                            <h1 class="text-center">Question 6</h1>
+                            <ul id="answers">
+                                <li class="answer correct" id="answer1">
+                                    Answer 1
+                                </li>
+                                <li class="answer wrong" id="answer2">
+                                    Answer 2
+                                </li>
+                                <li class="answer wrong" id="answer3">
+                                    Answer 3
+                                </li>
+                                <li class="answer wrong" id="answer4">
+                                    Answer 4
+                                </li>
+                            </ul>
+                        </div>                    
+                    `), $(`
+                        <div id="slide">
+                            <h1 class="text-center">Question 7</h1>
+                            <ul id="answers">
+                                <li class="answer wrong" id="answer1">
+                                    Answer 1
+                                </li>
+                                <li class="answer wrong" id="answer2">
+                                    Answer 2
+                                </li>
+                                <li class="answer correct" id="answer3">
+                                    Answer 3
+                                </li>
+                                <li class="answer wrong" id="answer4">
+                                    Answer 4
+                                </li>
+                            </ul>
+                        </div>                    
+                    `), $(`
+                        <div id="slide">
+                            <h1 class="text-center">Question 8</h1>
+                            <ul id="answers">
+                                <li class="answer wrong" id="answer1">
+                                    Answer 1
+                                </li>
+                                <li class="answer wrong" id="answer2">
+                                    Answer 2
+                                </li>
+                                <li class="answer wrong" id="answer3">
+                                    Answer 3
+                                </li>
+                                <li class="answer correct" id="answer4">
+                                    Answer 4
+                                </li>
+                            </ul>
+                        </div>                    
+                    `), $(`
+                        <div id="slide">
+                            <h1 class="text-center">Question 9</h1>
+                            <ul id="answers">
+                                <li class="answer wrong" id="answer1">
+                                    Answer 1
+                                </li>
+                                <li class="answer wrong" id="answer2">
+                                    Answer 2
+                                </li>
+                                <li class="answer correct" id="answer3">
+                                    Answer 3
+                                </li>
+                                <li class="answer wrong" id="answer4">
+                                    Answer 4
+                                </li>
+                            </ul>
+                        </div>                    
+                    `), $(`
+                        <div id="slide">
+                            <h1 class="text-center">Question 10</h1>
+                            <ul id="answers">
+                                <li class="answer wrong" id="answer1">
+                                    Answer 1
+                                </li>
+                                <li class="answer wrong" id="answer2">
+                                    Answer 2
+                                </li>
+                                <li class="answer correct" id="answer3">
+                                    Answer 3
+                                </li>
+                                <li class="answer wrong" id="answer4">
+                                    Answer 4
+                                </li>
+                            </ul>
+                        </div>                    
+                    `)
     ];
     const _TIMEUP = $(`
         <div id="slide">
@@ -110,25 +316,14 @@ $(function () {
     }
 
     function changeEvent (id, onClickFunction, selector) {
-        $(document).off(`click`, id);
         if (typeof selector != `undefined`) {
+            $(document).off(`click`, (id + `>` + selector));
             $(document).on(`click`, (id + `>` + selector), onClickFunction);
         }
         else {
+            $(document).off(`click`, id);
             $(document).on(`click`, id, onClickFunction);
         }
-    }
-
-    // Empty
-    function checkAnswer (questionElement) {
-        // logic to check questionElement and append result
-
-        return resultsArray;
-    }
-
-    // Empty
-    function grade () {
-        // todo
     }
 
     function nextQuestion (questionElement) {
@@ -162,13 +357,11 @@ $(function () {
             console.log($(this));
         }, `.answer`);
 
-        $(`#quizButton`).text("Submit Answer");
-        changeEvent(`#quizButton`, function () {
-            
-        });
-
         // Start the timers
         timerID = setTimeout(startInterval(), 30 * 1000);
+
+        // When the quiz button, now submit answer, is pressed, kill the timers, check the answer, and start transition with the
+        // _CORRECT or _WRONG slide based on selected answer
 
     }
 
@@ -256,5 +449,4 @@ $(function () {
         showHide(`#timer`);
         nextQuestion(_QUESTIONS[questionNumber]);
     });
-
 });

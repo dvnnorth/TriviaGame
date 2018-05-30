@@ -110,15 +110,12 @@ $(function () {
     }
 
     function changeEvent (id, onClickFunction, selector) {
-        console.log(`inside changeEvent`);
-        $(id).off();
-        if (typeof selector != 'undefined') {
-            console.log(`.selector is: ` + selector);
-            $(id).on(`click`, selector, onClickFunction);
+        $(document).off(`click`, id);
+        if (typeof selector != `undefined`) {
+            $(document).on(`click`, (id + `>` + selector), onClickFunction);
         }
         else {
-            console.log(`selector is: ` + selector);
-            $(id).on(`click`, onClickFunction);
+            $(document).on(`click`, id, onClickFunction);
         }
     }
 
@@ -140,16 +137,6 @@ $(function () {
 
         questionNumber++; // Increment questionNumber
 
-        console.log("changing answers on click");
-        changeEvent(`#answers`, function () {
-            console.log($(this));
-        }, `.answer`);
-
-        $(`#quizButton`).text("Submit Answer");
-        changeEvent(`#quizButton`, function () {
-            
-        });
-
         /* function startInterval starts the interval timer running which displays the time in seconds
            and returns an anonymous function to be executed when the timeout it is passed to ends,
            a function that kills the interval, gives a wrong result, and displays the timeout*/
@@ -170,6 +157,16 @@ $(function () {
         }
         // Transition in new question (old question is current #slide)
         questionSwitch($(`#slide`), questionElement);
+
+        changeEvent(`#answers`, function () {
+            console.log($(this));
+        }, `.answer`);
+
+        $(`#quizButton`).text("Submit Answer");
+        changeEvent(`#quizButton`, function () {
+            
+        });
+
         // Start the timers
         timerID = setTimeout(startInterval(), 30 * 1000);
 
@@ -258,39 +255,6 @@ $(function () {
     changeEvent(`#quizButton`, function () {
         showHide(`#timer`);
         nextQuestion(_QUESTIONS[questionNumber]);
-    });
-
-
-    //////////////////////////////////////
-    /* Debug button functionality */
-    var counter = 0;
-    /*$(`#nextQuestion`).on(`click`, function () {
-        let div = _QUESTIONS[counter];
-        nextQuestionTest(div);
-        counter++;
-    });*/
-
-    $(`#timesUp`).on(`click`, function () {
-        let div = _TIMEUP;
-        questionSwitch($(`#slide`), div);
-    });
-
-    $(`#showHideTimer`).on(`click`, function () {
-        if ($(`#timer`).hasClass(`show`)) {
-            $(`#timer`).removeClass(`show`);
-        }
-        else {
-            $(`#timer`).addClass(`show`)
-        }
-    });
-
-    $(`#showHideButtonDisplay`).on(`click`, function () {
-        if ($(`#buttonDisplay`).hasClass(`show`)) {
-            $(`#buttonDisplay`).removeClass(`show`);
-        }
-        else {
-            $(`#buttonDisplay`).addClass(`show`)
-        }
     });
 
 });

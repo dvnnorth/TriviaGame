@@ -9,47 +9,80 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-        <!-- Main container for entire quiz body-->
-        <div class="container">
 
-            <!-- Jumbotron Title -->
-            <div class="col jumbotron my-3">
-                <h1 class="display-1 text-center">
-                <span class="this">this</span> Quiz!
-                </h1>
+    <!-- Zeolearn Link Cheating Modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="zeolearnmodal" tabindex="-1" role="dialog" aria-labelledby="zeolearnmodallabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Hey Cheaty McCheaterson!!!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Hey there! Why ya trying to check the article before you check the quiz, HUH? Its a nice little informational article, for sure, but maybe give the quiz a go first, then read it? If you still want to go, I guess I can't stop ya, so here's the link -> <a href="https://www.zeolearn.com/magazine/understanding-the-this-keyword-in-javascript" target="_blank">Zeolearn: Understanding the “this” Keyword in JavaScript</a>.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Give It a Shot</button>
+                </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Main Content Row, #questionRow -->
-            <div class="row" id="questionRow">
+    <!-- Main container for entire quiz body-->
+    <div class="container">
 
-                <!-- Main Content Column display, holds timer, question, and buttons, #mainDisplay -->
-                <div class="col-11 col-lg-8 col-style mx-auto mb-3 p-3 rounded-edges" id="mainDisplay">
+        <!-- Jumbotron Title -->
+        <div class="col jumbotron my-3">
+            <h1 class="display-1 text-center">
+            <span class="this">this</span> Quiz!
+            </h1>
+        </div>
 
-                    <!-- Timer Display, #timer -->
-                    <div class="collapse" id="timer">
-                        <h3 class="text-center white">Time Left: <span id="timeDisplay"></span></h1>
-                    </div>
+        <!-- Main Content Row, #questionRow -->
+        <div class="row" id="questionRow">
 
-                    <!-- Question Display, #questionWrapper -->
-                    <div id="questionWrapper">
+            <!-- Main Content Column display, holds timer, question, and buttons, #mainDisplay -->
+            <div class="col-11 col-lg-8 col-style mx-auto mb-3 p-3 rounded-edges" id="mainDisplay">
 
-                        <!-- Slide that represents the actual question content and changes, #slide -->
-                        <div id="slide">
-                            
-                        </div>
+                <!-- Timer Display, #timer -->
+                <div class="collapse" id="timer">
+                    <h3 class="text-center white">Time Left: <span id="timeDisplay"></span></h1>
+                </div>
 
-                    </div>
+                <!-- Question Display, #questionWrapper -->
+                <div id="questionWrapper">
 
-                    <!-- Button display, button switches between Start, Submit Answer, and Retry -->
-                    <div class="mx-auto collapse show" style="width:110px" id="buttonDisplay">
-                        <button type="button" class="btn btn-secondary collapse show" id="quizButton">Start Quiz!</button>
+                    <!-- Slide that represents the actual question content and changes, #slide -->
+                    <div id="slide">
+                        <h1 class="text-center white">
+                            Yo, I Heard You Like <span class="this">this</span>!
+                        </h1>
+                        <p>
+                            Oh, wait, you don't? You think <span class="this">this</span> is frustrating? Has too many rules? Struggling to remember them all? Or, think you're a master? Think you've got it down pat? That you're hot #@%&amp;? Well have I got the quiz for you!
+                        </p>
+                        <p>
+                            This quiz will cover <span class="this">this</span> and its behavior in ten different contexts across ten questions. You have thirty seconds to answer each question so don't delay! For each code snippet, assume the code is being run in a browser. These code snippets were adapted from snippets in <a href="#" data-toggle="modal" data-target="#zeolearnmodal">this article about this from Zeolearn</a>.
+                        </p>
+                        <p> 
+                            Now then, step up and SHOW ME WHAT YOU GOT! <img src="assets/img/cromulon.png" alt="Cromulon" width=15>
+                        </p>
                     </div>
 
                 </div>
 
+                <!-- Button display, button switches between Start, Submit Answer, and Retry -->
+                <div class="mx-auto collapse show" style="width:110px" id="buttonDisplay">
+                    <button type="button" class="btn btn-secondary collapse show" id="quizButton">Start Quiz!</button>
+                </div>
+
             </div>
-            
+
         </div>
+        
+    </div>
     
     <!-- jQuery (full, min) -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>

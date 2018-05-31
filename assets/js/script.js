@@ -45,12 +45,11 @@
 // document on load wrapper
 $(function () {
 
-    function Question(number, question, answers, correctAnswerIndex, snippetID) {
+    function Question(number, question, answers, correctAnswerIndex) {
         this.number = number;
-        this.question = question,
-        this.answers = answers,
-        this.correctAnswerIndex = correctAnswerIndex,
-        this.snippetID = snippetID,
+        this.question = question;
+        this.answers = answers;
+        this.correctAnswerIndex = correctAnswerIndex;
 
         this.generateHTML = function () {
             let answerElement; // Will hold current <li> answer
@@ -59,7 +58,7 @@ $(function () {
             // Append chain to create the answer slide frame
             element.append(`<h1 class="text-center">Question ` + this.number + `</h1>`)
                    .append(`<p>` + this.question + `</p>`)
-                   .append($(this.snippetID))
+                   .append($(`<div id="snippetPlaceholder"></div>`))
                    .append(`<hr>`)
                    .append(`<ul id="answers"><ul>`);
 
@@ -69,7 +68,7 @@ $(function () {
             // - append the new answer element to li#answers
             for (let i = 0; i < this.answers.length; i++) {
                 answerElement = $(`<li class="answer">` + this.answers[i] + `</li>`);
-                if (correctAnswerIndex === i) {
+                if (this.correctAnswerIndex === i) {
                     answerElement.addClass(`correct`);
                 }
                 element.find(`#answers`).append(answerElement);
@@ -80,9 +79,6 @@ $(function () {
         // Using Fisher-Yates (aka Knuth) Shuffle from 
         // https://tinyurl.com/ybwsc79x (Stack Overflow tiny link)
         this.scrambleAnswers = function () {
-            console.log(`===== PRE SHUFFLE =====`)
-            console.log(this.answers)
-            console.log(this.correctAnswerIndex);
             let currentIndex = this.answers.length, temporaryValue, randomIndex;
             
             // While there remain elements to shuffle...
@@ -90,225 +86,39 @@ $(function () {
             
                 // Pick a remaining element...
                 randomIndex = Math.floor(Math.random() * currentIndex);
+
+                // Decrement index
                 currentIndex -= 1;
 
-                // Track correctAnswerIndex
-                if (currentIndex === this.correctAnswerIndex) {
-                    this.correctAnswerIndex = randomIndex;
+                // And if the randomIndex is different frmo currentIndex, swap it with the current element.
+                if (currentIndex !== randomIndex) {
+                    // Track correctAnswerIndex
+                    // if the current index that I'm swapping is the right answer
+                    if (currentIndex === this.correctAnswerIndex) {
+                        this.correctAnswerIndex = randomIndex;
+                    }
+                    // if the random index that I'm swapping to is the right answer
+                    if (randomIndex === this.correctAnswerIndex) {
+                        this.correctAnswerIndex = currentIndex;
+                    }
+                    // Swap
+                    temporaryValue = answers[currentIndex];
+                    answers[currentIndex] = answers[randomIndex];
+                    answers[randomIndex] = temporaryValue;
                 }
-            
-                // And swap it with the current element.
-                temporaryValue = answers[currentIndex];
-                answers[currentIndex] = answers[randomIndex];
-                answers[randomIndex] = temporaryValue;
             }
+            // Regenerate HTML with .correct appended to right answer
+            this.HTML = this.generateHTML();
         }
-        this.scrambleAnswers();
-        console.log(`===== POST SHUFFLE =====`)
-        console.log(this.answers)
-        console.log(this.correctAnswerIndex);
-        console.log(this.answers);
+
+        this.insertSnippet = function (snippetID) {
+            $(this.HTML).find(`#snippetPlaceholder`).replaceWith($(document).find(`#` + snippetID));
+        }
+
+        this.HTML = this.generateHTML();
     }
 
     // Slides
-    // _QUESTIONS is an array of slides that each represent a question.
-    // Would like this massive block in a separate file,
-    // but AJAX requests can't be made to local files...
-    // I guess it would work after being deployed?
-    // Also wish I could move this to bottom, but wont
-    // be hoisted...
-    // Now that I think of it, using classes to determine
-    // whether an answer is right or wrong enables
-    // cheating quite easily with the dev tools...
-    // Would be nice to obfuscate this. Could have
-    // answer bank and have a scramble answer that pushes
-    // answers randomly to question list then pushes
-    // which index is correct to an answer_key array
-    const _QUESTIONSold = [ $(`
-                        <div id="slide">
-                            <h1 class="text-center">Question 1</h1>
-                            <p>
-                                What will the following code snippet log to the console? 
-                            </p>
-                            <script src="https://gist.github.com/dvnnorth/8d831b5e32243b66595d0965a54e1baa.js"></script>
-                            <hr>
-                            <ul id="answers">
-                                <li class="answer">
-                                    <pre>false</pre><pre>false</pre>
-                                </li>
-                                <li class="answer correct">
-                                    <pre>true</pre><pre>true</pre>
-                                </li>
-                                <li class="answer">
-                                    <pre>true</pre><pre>false</pre>
-                                </li>
-                                <li class="answer">
-                                    <pre>false</pre><pre>true</pre>
-                                </li>
-                            </ul>
-                        </div>
-                    `), $(`
-                    <div id="slide">
-                        <h1 class="text-center">Question 2</h1>
-                        <p>
-                            What will the following code snippet log to the console? 
-                        </p>
-                        <script src="https://gist.github.com/dvnnorth/ad149534cc2dd6d9c5f0f5b71606d923.js"></script>
-                        <hr>
-                        <ul id="answers">
-                            <li class="answer correct">
-                                <pre>true</pre>
-                            </li>
-                            <li class="answer">
-                                <pre>false</pre>
-                            </li>
-                        </ul>
-                    </div> 
-                    `), $(`
-                    <div id="slide">
-                        <h1 class="text-center">Question 3</h1>
-                        <p>
-                            What will the following code snippet log to the console? 
-                        </p>
-                        <script src="https://gist.github.com/dvnnorth/9a9e69c55f2bd519dc9444ed52f783d6.js"></script>
-                        <hr>
-                        <ul id="answers">
-                            <li class="answer">
-                                <pre>true</pre>
-                            </li>
-                            <li class="answer correct">
-                                <pre>false</pre>
-                            </li>
-                        </ul>
-                    </div>
-                    `), $(`
-                        <div id="slide">
-                            <h1 class="text-center">Question 4</h1>
-                            <ul id="answers">
-                                <li class="answer">
-                                    Answer 1
-                                </li>
-                                <li class="answer correct">
-                                    Answer 2
-                                </li>
-                                <li class="answer">
-                                    Answer 3
-                                </li>
-                                <li class="answer">
-                                    Answer 4
-                                </li>
-                            </ul>
-                        </div>
-                    `), $(`
-                        <div id="slide">
-                            <h1 class="text-center">Question 5</h1>
-                            <ul id="answers">
-                                <li class="answer correct">
-                                    Answer 1
-                                </li>
-                                <li class="answer">
-                                    Answer 2
-                                </li>
-                                <li class="answer">
-                                    Answer 3
-                                </li>
-                                <li class="answer">
-                                    Answer 4
-                                </li>
-                            </ul>
-                        </div>                    
-                    `), $(`
-                        <div id="slide">
-                            <h1 class="text-center">Question 6</h1>
-                            <ul id="answers">
-                                <li class="answer correct">
-                                    Answer 1
-                                </li>
-                                <li class="answer">
-                                    Answer 2
-                                </li>
-                                <li class="answer">
-                                    Answer 3
-                                </li>
-                                <li class="answer">
-                                    Answer 4
-                                </li>
-                            </ul>
-                        </div>                    
-                    `), $(`
-                        <div id="slide">
-                            <h1 class="text-center">Question 7</h1>
-                            <ul id="answers">
-                                <li class="answer">
-                                    Answer 1
-                                </li>
-                                <li class="answer">
-                                    Answer 2
-                                </li>
-                                <li class="answer correct">
-                                    Answer 3
-                                </li>
-                                <li class="answer">
-                                    Answer 4
-                                </li>
-                            </ul>
-                        </div>                    
-                    `), $(`
-                        <div id="slide">
-                            <h1 class="text-center">Question 8</h1>
-                            <ul id="answers">
-                                <li class="answer">
-                                    Answer 1
-                                </li>
-                                <li class="answer">
-                                    Answer 2
-                                </li>
-                                <li class="answer">
-                                    Answer 3
-                                </li>
-                                <li class="answer correct">
-                                    Answer 4
-                                </li>
-                            </ul>
-                        </div>                    
-                    `), $(`
-                        <div id="slide">
-                            <h1 class="text-center">Question 9</h1>
-                            <ul id="answers">
-                                <li class="answer">
-                                    Answer 1
-                                </li>
-                                <li class="answer">
-                                    Answer 2
-                                </li>
-                                <li class="answer correct">
-                                    Answer 3
-                                </li>
-                                <li class="answer">
-                                    Answer 4
-                                </li>
-                            </ul>
-                        </div>                    
-                    `), $(`
-                        <div id="slide">
-                            <h1 class="text-center">Question 10</h1>
-                            <ul id="answers">
-                                <li class="answer">
-                                    Answer 1
-                                </li>
-                                <li class="answer">
-                                    Answer 2
-                                </li>
-                                <li class="answer correct">
-                                    Answer 3
-                                </li>
-                                <li class="answer">
-                                    Answer 4
-                                </li>
-                            </ul>
-                        </div>                    
-                    `)
-    ];
     const _TIMEUP = $(`
         <div id="slide">
             <h1 class="text-center gotItWrong">Time's Up!</h1>
@@ -348,7 +158,7 @@ $(function () {
             ids.push(element.getAttribute(`id`)); 
         });
         return ids;
-    })();
+    })();console.log(snippetIDs)
     // Array that will hold our questions objects
     // Initialize questions
     // Remember, answers and correctIndex are scrambled when new Question is instantiated
@@ -360,77 +170,66 @@ $(function () {
                         `<pre>true</pre><pre>true</pre>`,
                         `<pre>true</pre><pre>false</pre>`,
                         `<pre>false</pre><pre>true</pre>`
-                     ], 
-                    1, ``),
+                     ], 1),
         /* Question 2 */ 
         new Question(2, `What will the following code snippet log to the console?`, 
                      [
-                        `<pre>false</pre><pre>true</pre>`,
-                        `<pre>true</pre><pre>false</pre>`
-                     ], 
-                    0, ``),
+                        `<pre>true</pre>`,
+                        `<pre>false</pre>`
+                     ], 0),
         /* Question 3 */ 
         new Question(3, `What will the following code snippet log to the console?`, 
                      [
                         `<pre>true</pre>`,
                         `<pre>false</pre>`
-                     ], 
-                    1, ``),
+                     ], 1),
         /* Question 4 */ 
         new Question(4, `What will the following code snippet log to the console?`, 
                      [
                         `<pre>false</pre><pre>true</pre>`,
                         `<pre>true</pre><pre>false</pre>`
-                     ], 
-                    0, ``),
+                     ], 0),
         /* Question 5 */ 
         new Question(5, `What will the following code snippet log to the console?`, 
                      [
                         `<pre>false</pre><pre>true</pre>`,
                         `<pre>true</pre><pre>false</pre>`
-                     ], 
-                    0, ``),
+                     ], 0),
         /* Question 6 */ 
         new Question(6, `What will the following code snippet log to the console?`, 
                      [
                         `<pre>false</pre><pre>true</pre>`,
                         `<pre>true</pre><pre>false</pre>`
-                     ], 
-                    0, ``),
+                     ], 0),
         /* Question 7 */ 
         new Question(7, `What will the following code snippet log to the console?`, 
                      [
                         `<pre>false</pre><pre>true</pre>`,
                         `<pre>true</pre><pre>false</pre>`
-                     ], 
-                    0, ``),
+                     ], 0),
         /* Question 8 */ 
         new Question(8, `What will the following code snippet log to the console?`, 
                      [
                         `<pre>false</pre><pre>true</pre>`,
                         `<pre>true</pre><pre>false</pre>`
-                     ], 
-                    0, ``),
+                     ], 0),
         /* Question 9 */ 
         new Question(9, `What will the following code snippet log to the console?`, 
                      [
                         `<pre>false</pre><pre>true</pre>`,
                         `<pre>true</pre><pre>false</pre>`
-                     ], 
-                    0, ``),
+                     ], 0),
         /* Question 10 */
         new Question(10, `What will the following code snippet log to the console?`, 
                      [
                         `<pre>false</pre><pre>true</pre>`,
                         `<pre>true</pre><pre>false</pre>`
-                     ], 
-                    0, ``)
+                     ], 0)
     ];
     // Then assign snippetIDs to questions
     for (let i = 0; i < questions.length; i++) {
-        questions[i].snippetID = snippetIDs[i];
+        questions[i].insertSnippet(snippetIDs[i]);
     }
-    console.log(questions);
     let questionNumber = 0; // Tracks index of question array that we're on
     let results = []; // Holds the results of each answer being correct or not (true or false)
     let answer = ``; // Will hold the selected answer for grading
@@ -545,7 +344,7 @@ $(function () {
         $(`#timer`).collapse(`toggle`);
 
         // Transition in new question (old question is current #slide)
-        questionSwitch($(`#slide`), questionObj.generateHTML());
+        questionSwitch($(`#slide`), questionObj.HTML);
 
         // Reset event handler for clicking answers
         changeEvent(`#answers`, function () {
@@ -672,7 +471,6 @@ $(function () {
             changeEvent(`#quizButton`, function () {
                 questionNumber = 0;
                 results = [];
-                $(`#quizButton`).collapse(`toggle`); // hiding again, will be revealed in nextQuestion
                 nextQuestion(questions[questionNumber]);
             });
             $(`#quizButton`).collapse(`toggle`);

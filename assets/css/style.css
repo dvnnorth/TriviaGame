@@ -96,14 +96,18 @@ p {
 }
 
 .modal-header, .modal-body   {
-  color: black!important;
+  color: #000!important;
 }
   
 pre {
-  color: white!important;
+  color: #fff!important;
 }
 
 #answers {
   list-style: none;
   padding-left: 0;
+}
+
+hr {
+  border-color: #50565E;
 }

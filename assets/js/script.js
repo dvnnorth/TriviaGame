@@ -1,3 +1,18 @@
+// Preload gifs
+let gifs = new Array();
+
+function preload() {
+    for (i = 0; i < preload.arguments.length; i++) {
+        gifs[i] = new Image()
+        gifs[i].src = preload.arguments[i]
+    }
+}
+
+preload(
+    `./assets/img/no.gif`,
+    `./assets/img/yes.gif`
+);
+
 /* From the specification: 
     
     * You'll create a trivia game that shows only one question until the player answers it or their time runs out.
@@ -125,13 +140,15 @@ $(function () {
     const _CORRECT = $(`
         <div id="slide">
             <h1 class="text-center gotIt">Correct!</h1>
-            <p class="text-center">Great job!</p>
+            <img src="./assets/img/yes.gif" alt="Right Answer" class="center-img" width=280>
+            <p class="text-center"></p>
         </div>
     `);
     const _WRONG = $(`
         <div id="slide">
             <h1 class="text-center gotItWrong">Wrong Answer</h1>
-            <p class="text-center">You got it wrong...</p>
+            <img src="./assets/img/no.gif" alt="Wrong Answer" class="center-img">
+            <p class="text-center"></p>
         </div>
     `);
     const _FINAL = $(`
@@ -163,7 +180,7 @@ $(function () {
     let questions = [
         /* Question 1 */ 
         new Question(1, `What will the following code snippet log to the console?`, 
-                     [
+                     [ // true true
                         `<pre>false</pre><pre>false</pre>`,
                         `<pre>true</pre><pre>true</pre>`,
                         `<pre>true</pre><pre>false</pre>`,
@@ -171,19 +188,19 @@ $(function () {
                      ], 1, snippets[0]),
         /* Question 2 */ 
         new Question(2, `What will the following code snippet log to the console?`, 
-                     [
+                     [ // true
                         `<pre>true</pre>`,
                         `<pre>false</pre>`
                      ], 0, snippets[1]),
         /* Question 3 */ 
         new Question(3, `What will the following code snippet log to the console?`, 
-                     [
+                     [ // false
                         `<pre>true</pre>`,
                         `<pre>false</pre>`
                      ], 1, snippets[2]),
         /* Question 4 */ 
         new Question(4, `What will the following code snippet log to the console?`, 
-                     [
+                     [ // true
                         `<pre>true</pre>`,
                         `<pre>false</pre>`
                      ], 0, snippets[3]),
@@ -198,33 +215,43 @@ $(function () {
                      ], 3, snippets[4]),
         /* Question 6 */ 
         new Question(6, `What will the following code snippet log to the console?`, 
-                     [
-                        `<pre>false</pre><pre>true</pre>`,
-                        `<pre>true</pre><pre>false</pre>`
+                     [ // false true false
+                        `<pre>false</pre><pre>true</pre><pre>false</pre>`,
+                        `<pre>true</pre><pre>false</pre><pre>true</pre>`,
+                        `<pre>true</pre><pre>true</pre><pre>true</pre>`,
+                        `<pre>false</pre><pre>false</pre><pre>false</pre>`
                      ], 0, snippets[5]),
         /* Question 7 */ 
         new Question(7, `What will the following code snippet log to the console?`, 
-                     [
-                        `<pre>false</pre><pre>true</pre>`,
-                        `<pre>true</pre><pre>false</pre>`
-                     ], 0, snippets[6]),
+                     [ // Name: John Reed, Name: Paul Adams, Name: Paul Adams
+                        `<pre>Name: John Reed</pre><pre>Name: John Reed</pre><pre>Name: Paul Adams</pre>`,
+                        `<pre>Name: John Reed</pre><pre>Name: John Reed</pre><pre>Name: John Reed</pre>`,
+                        `<pre>Name: John Reed</pre><pre>Name: John Reed</pre><pre>Name: undefined undefined</pre>`,
+                        `<pre>Name: John Reed</pre><pre>Name: Paul Adams</pre><pre>Name: Paul Adams</pre>`
+                     ], 3, snippets[6]),
         /* Question 8 */ 
         new Question(8, `What will the following code snippet log to the console?`, 
-                     [
-                        `<pre>false</pre><pre>true</pre>`,
-                        `<pre>true</pre><pre>false</pre>`
-                     ], 0, snippets[7]),
+                     [ // Name: John Reed, Name: Paul Adams, Name: John Reed
+                        `<pre>Name: John Reed</pre><pre>Name: John Reed</pre><pre>Name: Paul Adams</pre>`,
+                        `<pre>Name: John Reed</pre><pre>Name: Paul Adams</pre><pre>Name: John Reed</pre>`,
+                        `<pre>Name: John Reed</pre><pre>Name: Paul Adams</pre><pre>Name: undefined undefined</pre>`,
+                        `<pre>Name: John Reed</pre><pre>Name: Paul Adams</pre><pre>Name: John Adams</pre>`
+                     ], 1, snippets[7]),
         /* Question 9 */ 
         new Question(9, `What will the following code snippet log to the console?`, 
-                     [
-                        `<pre>false</pre><pre>true</pre>`,
-                        `<pre>true</pre><pre>false</pre>`
-                     ], 0, snippets[8]),
+                     [// Name: John Reed, Name: undefined undefined
+                        `<pre>Name: John Reed</pre><pre>Name: Paul Adams</pre>`,
+                        `<pre>Name: John Reed</pre><pre>Name: John Reed</pre>`,
+                        `<pre>Name: John Reed</pre><pre>Name: John Adams</pre>`,
+                        `<pre>Name: John Reed</pre><pre>Name: undefined undefined</pre>`
+                     ], 3, snippets[8]),
         /* Question 10 */
         new Question(10, `What will the following code snippet log to the console?`, 
-                     [
-                        `<pre>false</pre><pre>true</pre>`,
-                        `<pre>true</pre><pre>false</pre>`
+                     [ // 6 true
+                        `<pre>6</pre><pre>true</pre>`,
+                        `<pre>NaN</pre><pre>true</pre>`,
+                        `<pre>undefined</pre><pre>false</pre>`,
+                        `<pre>6</pre><pre>false</pre>`
                      ], 0, snippets[9])
     ];
 
@@ -238,7 +265,7 @@ $(function () {
         // Fade the previous question to 0 opacity, then when it completes,
         // remove the current question, append the next question to the question 
         // display and fade it in
-        previousQuestionElement.animate({opacity: 0}, 500, `swing`, function () {
+        previousQuestionElement.animate({opacity: 0}, 350, `swing`, function () {
             // remove previous question element from DOM
             previousQuestionElement.remove();
             // Set opacity of the next question element to 0
@@ -246,7 +273,7 @@ $(function () {
             // Append the next question element to the question display
             nextQuestionElement.appendTo(`#questionWrapper`);
             // Fade it in
-            nextQuestionElement.animate({opacity: 1}, 500, `swing`, function () {
+            nextQuestionElement.animate({opacity: 1}, 350, `swing`, function () {
                 // Transition complete
                 $(document).trigger(`transComplete`);
             });

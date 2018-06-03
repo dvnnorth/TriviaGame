@@ -80,13 +80,9 @@ $(function () {
 
             // Go through every answer in answers[] and 
             // - create an element and assign to answerElement
-            // - if the current index is the same as the correctAnswerIndex, add class .correct
             // - append the new answer element to li#answers
             for (let i = 0; i < this.answers.length; i++) {
                 answerElement = $(`<li class="answer">` + this.answers[i] + `</li>`);
-                if (this.correctAnswerIndex === i) {
-                    answerElement.addClass(`correct`);
-                }
                 element.find(`#answers`).append(answerElement);
             }
             return element;
@@ -95,10 +91,12 @@ $(function () {
         // Using Fisher-Yates (aka Knuth) Shuffle from 
         // https://tinyurl.com/ybwsc79x (Stack Overflow tiny link)
         this.scrambleAnswers = function () {
-            let currentIndex = this.answers.length, temporaryValue, randomIndex;
+            let currentIndex = this.answers.length;
+            let changed = false;
+            let temporaryValue, randomIndex;
             
             // While there remain elements to shuffle...
-            while (0 !== currentIndex) {
+            while (currentIndex !== 0) {
             
                 // Pick a remaining element...
                 randomIndex = Math.floor(Math.random() * currentIndex);
@@ -106,7 +104,7 @@ $(function () {
                 // Decrement index
                 currentIndex -= 1;
 
-                // And if the randomIndex is different frmo currentIndex, swap it with the current element.
+                // And if the randomIndex is different from currentIndex, swap it with the current element.
                 if (currentIndex !== randomIndex) {
                     // Track correctAnswerIndex
                     // if the current index that I'm swapping is the right answer
@@ -114,17 +112,20 @@ $(function () {
                         this.correctAnswerIndex = randomIndex;
                     }
                     // if the random index that I'm swapping to is the right answer
-                    if (randomIndex === this.correctAnswerIndex) {
+                    else if (randomIndex === this.correctAnswerIndex) {
                         this.correctAnswerIndex = currentIndex;
                     }
                     // Swap
-                    temporaryValue = answers[currentIndex];
-                    answers[currentIndex] = answers[randomIndex];
-                    answers[randomIndex] = temporaryValue;
+                    temporaryValue = this.answers[currentIndex];
+                    this.answers[currentIndex] = this.answers[randomIndex];
+                    this.answers[randomIndex] = temporaryValue;
+                    changed = true;
                 }
             }
-            // Regenerate HTML with .correct appended to right answer
-            this.HTML = this.generateHTML();
+            // Regenerate HTML if it's changed
+            if (changed) {
+                this.HTML = this.generateHTML();
+            }
         }
 
         this.HTML = this.generateHTML();
@@ -258,13 +259,17 @@ $(function () {
     let questionNumber = 0; // Tracks index of question array that we're on
     let results = []; // Holds the results of each answer being correct or not (true or false)
     let answer = ``; // Will hold the selected answer for grading
+    let currentCorrectAnswer; // Will hold the current correct answer for comparison
     let slideTransitionComplete = new Event(`transComplete`); // Special event to be triggered when slide transition completes
 
     function questionSwitch (previousQuestionElement, nextQuestionElement) {
 
+        // Scroll to #timeDisplay
         // Fade the previous question to 0 opacity, then when it completes,
         // remove the current question, append the next question to the question 
         // display and fade it in
+
+        // Start transition
         previousQuestionElement.animate({opacity: 0}, 350, `swing`, function () {
             // remove previous question element from DOM
             previousQuestionElement.remove();
@@ -276,6 +281,10 @@ $(function () {
             nextQuestionElement.animate({opacity: 1}, 350, `swing`, function () {
                 // Transition complete
                 $(document).trigger(`transComplete`);
+                // Smoothly scroll to timeDisplay at top of browser window
+                $('html, body').animate({
+                    scrollTop: $(`#timeDisplay`).offset().top
+                }, 300);
             });
         });
     }
@@ -295,6 +304,16 @@ $(function () {
             $(document).off(`click`, id);
             $(document).on(`click`, id, onClickFunction);
         }
+    }
+
+    function answerOnClickBehavior() {
+        // Clear all elements in #answers of .selected
+        $(`#answers`).children().each(function() {
+            $(this).removeClass(`selected`);
+        });
+
+        // add .selected to this element to make sure that selected answer is highlighted
+        $(this).addClass(`selected`);
     }
 
     // Helper function to display results after the _FINAL slide has been displayed
@@ -337,9 +356,10 @@ $(function () {
     // function nextQuestion is all of the quiz logic that should run every time a new question slide is displayed
     // nextQuestion called every time a new question is to appear. Increments questionNumber to keep quiz moving
     function nextQuestion (questionObj) {
-        let counter = 30; // Will count seconds;
+        let counter = 60; // Will count seconds;
         let intervalID, timerID; // Interval ID and Timer ID to be stored so they can be killed
 
+        currentCorrectAnswer = questionObj.answers[questionObj.correctAnswerIndex];
         questionNumber++; // Increment questionNumber
 
         /* function startInterval starts the interval timer running which displays the time in seconds
@@ -361,6 +381,7 @@ $(function () {
                 clearInterval(intervalID);
                 clearTimeDisplay();
                 answer = ``;
+                currentCorrectAnswer = ``;
                 transition(_TIMEUP);
             };
         }
@@ -371,7 +392,9 @@ $(function () {
         // Transition in new question (old question is current #slide)
         questionSwitch($(`#slide`), questionObj.HTML);
 
-        // Reset event handler for clicking answers
+        changeEvent(`#answers`, answerOnClickBehavior, `.answer`);
+
+        /*// Reset event handler for clicking answers
         changeEvent(`#answers`, function () {
             // Clear all elements in #answers of .selected
             $(`#answers`).children().each(function() {
@@ -381,10 +404,10 @@ $(function () {
             // add .selected to this element to make sure that selected answer is highlighted
             $(this).addClass(`selected`);
 
-        }, `.answer`);
+        }, `.answer`);*/
 
         // Start the timers
-        timerID = setTimeout(startInterval(), 30 * 1000);
+        timerID = setTimeout(startInterval(), 60 * 1000);
 
         // Make #quizButton display "Submit Answer"
         $(`#quizButton`).text(`Submit Answer`);
@@ -404,14 +427,15 @@ $(function () {
             if (answer === ``) {
                 $(`#quizButton`).effect(`shake`);
             }
-            // Else If answer has been selected and is correct
-            else if (answer.hasClass(`correct`)) {
+            // Else If text of answer
+            else if (answer.html() === currentCorrectAnswer) {
                 results.push(true);
                 clearTimeout(timerID);
                 clearInterval(intervalID);
                 clearTimeDisplay();
                 answer.removeClass(`selected`);
                 answer = ``;
+                currentCorrectAnswer = ``;
                 transition(_CORRECT);
             }
             // Else (is selected and wrong)
@@ -422,6 +446,7 @@ $(function () {
                 clearTimeDisplay();
                 answer.removeClass(`selected`);
                 answer = ``;
+                currentCorrectAnswer = ``;
                 transition(_WRONG);
             }
         });

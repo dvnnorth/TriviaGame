@@ -241,10 +241,10 @@ $(function () {
         /* Question 9 */ 
         new Question(9, `What will the following code snippet log to the console?`, 
                      [// Name: John Reed, Name: undefined undefined
-                        `<pre>Name: John Reed</pre><pre>Name: Paul Adams</pre>`,
-                        `<pre>Name: John Reed</pre><pre>Name: John Reed</pre>`,
-                        `<pre>Name: John Reed</pre><pre>Name: John Adams</pre>`,
-                        `<pre>Name: John Reed</pre><pre>Name: undefined undefined</pre>`
+                        `<pre>Name: John Reed</pre><pre>Name: Paul Adams</pre><pre>Name: Paul Adams</pre>`,
+                        `<pre>Name: John Reed</pre><pre>Name: Paul Adams</pre><pre>Name: John Reed</pre>`,
+                        `<pre>Name: John Reed</pre><pre>Name: Paul Adams</pre><pre>Name: John Adams</pre>`,
+                        `<pre>Name: John Reed</pre><pre>Name: Paul Adams</pre><pre>Name: undefined undefined</pre>`
                      ], 3, snippets[8]),
         /* Question 10 */
         new Question(10, `What will the following code snippet log to the console?`, 

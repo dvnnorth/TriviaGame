@@ -6,14 +6,12 @@
   color: #fff;
 }
 
-body {
-  background: url("../img/random_Binary_Background.png");
+hr {
+  border-color: #50565E;
 }
 
-.container,
-.row {
-  background: #20262E;
-  padding-top: 0.2rem;
+body {
+  background: url("../img/random_Binary_Background.png");
 }
 
 h1,
@@ -27,6 +25,21 @@ h5 {
 
 p {
   color: white;
+}
+
+pre {
+  color: #fff!important;
+}
+
+#answers {
+  list-style: none;
+  padding-left: 0;
+}
+
+.container,
+.row {
+  background: #20262E;
+  padding-top: 0.2rem;
 }
 
 .white {
@@ -60,6 +73,7 @@ p {
 
 .answer {
   padding: 5px;
+  cursor: pointer;
 }
 
 .answer:hover {
@@ -97,19 +111,6 @@ p {
 
 .modal-header, .modal-body   {
   color: #000!important;
-}
-  
-pre {
-  color: #fff!important;
-}
-
-#answers {
-  list-style: none;
-  padding-left: 0;
-}
-
-hr {
-  border-color: #50565E;
 }
 
 .center-img {
